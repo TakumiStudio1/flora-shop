@@ -51,9 +51,15 @@ button { cursor: none; font-family: var(--sans); }
   position: fixed; top: 0; left: 0;
   pointer-events: none; z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+  transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s, opacity 0.3s;
+  mix-blend-mode: exclusion;
 }
-.cursor.hover { width: 55px; height: 55px; background: rgba(74,124,89,0.06); border-color: var(--green-light); }
+.cursor.hover {
+  width: 60px; height: 60px;
+  background: rgba(74,124,89,0.08);
+  border-color: var(--green-light);
+}
+.cursor.clicking { transform: translate(-50%,-50%) scale(0.8); }
 .cursor-dot {
   width: 5px; height: 5px;
   background: var(--green);
@@ -61,15 +67,25 @@ button { cursor: none; font-family: var(--sans); }
   position: fixed; top: 0; left: 0;
   pointer-events: none; z-index: 10000;
   transform: translate(-50%, -50%);
+  transition: transform 0.15s;
+}
+.cursor-trail {
+  width: 3px; height: 3px;
+  background: var(--green);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none; z-index: 9998;
+  opacity: 0;
+  transform: translate(-50%,-50%);
 }
 
 /* ===== SCROLL PROGRESS ===== */
 .scroll-progress {
   position: fixed; top: 0; left: 0;
-  height: 2px; z-index: 9998;
-  background: linear-gradient(90deg, var(--green), var(--green-light), var(--sage));
+  height: 3px; z-index: 9998;
+  background: linear-gradient(90deg, var(--olive), var(--green), var(--green-light), var(--sage));
   width: 0%;
-  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(74,124,89,0.3);
 }
 
 /* ===== LOADER ===== */
@@ -80,43 +96,88 @@ button { cursor: none; font-family: var(--sans); }
   display: flex; align-items: center; justify-content: center;
   flex-direction: column; gap: 2rem;
 }
-.loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.8s ease; }
-.loader-leaf {
-  width: 40px; height: 60px;
+.loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+.loader-plant {
   position: relative;
+  width: 60px; height: 100px;
 }
-.loader-leaf::before {
-  content: '';
-  position: absolute; inset: 0;
+.loader-stem {
+  position: absolute;
+  bottom: 0; left: 50%;
+  width: 2px; height: 0;
   background: var(--green);
+  transform: translateX(-50%);
+  animation: stemGrow 1s ease-out 0.2s forwards;
+}
+@keyframes stemGrow { to { height: 50px; } }
+.loader-leaf-l, .loader-leaf-r {
+  position: absolute;
   border-radius: 50% 0 50% 0;
-  animation: leafSpin 1.2s ease-in-out infinite;
+  background: var(--green);
+  opacity: 0;
+  transform-origin: bottom right;
 }
-@keyframes leafSpin {
-  0% { transform: rotate(0deg) scale(1); opacity: 0.6; }
-  50% { transform: rotate(180deg) scale(0.8); opacity: 1; }
-  100% { transform: rotate(360deg) scale(1); opacity: 0.6; }
+.loader-leaf-l {
+  width: 30px; height: 20px;
+  bottom: 35px; left: 2px;
+  animation: leafGrowL 0.6s ease 0.8s forwards;
 }
+.loader-leaf-r {
+  width: 28px; height: 18px;
+  bottom: 45px; left: 30px;
+  transform: scaleX(-1);
+  animation: leafGrowR 0.6s ease 1s forwards;
+}
+@keyframes leafGrowL { from { opacity:0; transform: scale(0) rotate(-30deg); } to { opacity:0.8; transform: scale(1) rotate(-30deg); } }
+@keyframes leafGrowR { from { opacity:0; transform: scaleX(-1) scale(0) rotate(-20deg); } to { opacity:0.7; transform: scaleX(-1) scale(1) rotate(-20deg); } }
+.loader-pot {
+  position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 22px;
+  background: var(--terracotta);
+  border-radius: 3px 3px 8px 8px;
+  opacity: 0;
+  animation: potIn 0.4s ease 0.1s forwards;
+}
+.loader-pot::before {
+  content: '';
+  position: absolute; top: -4px; left: -2px;
+  width: calc(100% + 4px); height: 7px;
+  background: var(--terracotta); border-radius: 2px;
+  opacity: 0.9;
+}
+@keyframes potIn { to { opacity: 1; } }
 .loader-text {
-  display: flex; gap: 3px;
+  display: flex; gap: 4px;
   font-family: var(--serif);
-  font-size: 1.8rem;
-  letter-spacing: 8px;
-  color: var(--text);
+  font-size: 2rem;
+  letter-spacing: 10px;
+  color: var(--green);
 }
 .loader-text span {
   opacity: 0;
-  animation: letterIn 0.5s ease forwards;
+  transform: translateY(15px) rotate(-5deg);
+  animation: ltrIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-@keyframes letterIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes ltrIn { to { opacity: 1; transform: translateY(0) rotate(0); } }
+.loader-bar {
+  width: 120px; height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
 }
+.loader-bar::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--green);
+  animation: loadBar 1.5s ease forwards;
+}
+@keyframes loadBar { from { width: 0; } to { width: 100%; } }
 
 /* ===== FLOATING LEAVES ===== */
 .floating-leaf {
   position: fixed;
-  width: 12px; height: 18px;
   pointer-events: none;
   z-index: 1;
   opacity: 0;
@@ -127,7 +188,17 @@ button { cursor: none; font-family: var(--sans); }
   width: 100%; height: 100%;
   background: var(--green);
   border-radius: 50% 0 50% 0;
-  opacity: 0.12;
+  opacity: 0.1;
+}
+
+/* ===== PARALLAX BG SHAPES ===== */
+.bg-shape-fixed {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  will-change: transform;
 }
 
 /* ===== NAV ===== */
@@ -142,7 +213,7 @@ nav {
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transform: translateY(-100%);
-  animation: navIn 0.6s cubic-bezier(0.16,1,0.3,1) 1s forwards;
+  animation: navIn 0.6s cubic-bezier(0.16,1,0.3,1) 1.8s forwards;
 }
 @keyframes navIn { to { transform: translateY(0); } }
 .nav-logo {
@@ -150,7 +221,17 @@ nav {
   font-size: 1.4rem;
   letter-spacing: 6px;
   color: var(--green);
+  position: relative;
 }
+.nav-logo::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--green);
+  transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-logo:hover::after { width: 100%; }
 .nav-links { display: flex; gap: 2rem; align-items: center; }
 .nav-links a {
   font-size: 0.75rem;
@@ -159,17 +240,19 @@ nav {
   color: var(--text-dim);
   position: relative;
   transition: color 0.3s;
+  overflow: hidden;
 }
 .nav-links a::after {
   content: '';
   position: absolute;
   bottom: -4px; left: 0;
-  width: 0; height: 1px;
+  width: 100%; height: 1px;
   background: var(--green);
-  transition: width 0.3s ease;
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
 }
 .nav-links a:hover { color: var(--green); }
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover::after { transform: translateX(0); }
 .nav-cart {
   display: flex; align-items: center; gap: 6px;
   padding: 0.5rem 1.25rem;
@@ -180,9 +263,22 @@ nav {
   text-transform: uppercase;
   color: var(--green);
   background: none;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+  overflow: hidden;
 }
-.nav-cart:hover { background: var(--green); color: white; }
+.nav-cart::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  z-index: 0;
+}
+.nav-cart:hover::before { transform: scaleX(1); }
+.nav-cart:hover { color: white; border-color: var(--green); }
+.nav-cart span, .nav-cart .count { position: relative; z-index: 1; }
 .nav-cart .count {
   width: 18px; height: 18px;
   border-radius: 50%;
@@ -191,7 +287,7 @@ nav {
   display: flex; align-items: center; justify-content: center;
   font-size: 0.55rem;
   font-weight: 600;
-  transition: background 0.3s, color 0.3s;
+  transition: all 0.3s;
 }
 .nav-cart:hover .count { background: white; color: var(--green); }
 
@@ -207,15 +303,15 @@ nav {
 .hero-bg-shape {
   position: absolute;
   border-radius: 50%;
-  background: var(--green-dim);
   filter: blur(80px);
-  opacity: 0;
-  animation: shapeIn 1.5s ease 1.2s forwards;
+  will-change: transform;
 }
-@keyframes shapeIn { to { opacity: 1; } }
-.hero-bg-shape:nth-child(1) { width: 600px; height: 600px; top: -200px; right: -100px; }
-.hero-bg-shape:nth-child(2) { width: 400px; height: 400px; bottom: -100px; left: -50px; background: rgba(196,114,90,0.06); }
-.hero-bg-shape:nth-child(3) { width: 300px; height: 300px; top: 50%; right: 30%; background: rgba(212,197,169,0.08); }
+.hero-bg-shape:nth-child(1) { width: 700px; height: 700px; background: rgba(74,124,89,0.08); top: -250px; right: -150px; animation: bgFloat1 20s ease-in-out infinite; }
+.hero-bg-shape:nth-child(2) { width: 500px; height: 500px; background: rgba(196,114,90,0.05); bottom: -150px; left: -100px; animation: bgFloat2 25s ease-in-out infinite; }
+.hero-bg-shape:nth-child(3) { width: 350px; height: 350px; background: rgba(212,197,169,0.06); top: 40%; right: 25%; animation: bgFloat3 18s ease-in-out infinite; }
+@keyframes bgFloat1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-30px,20px) scale(1.05); } }
+@keyframes bgFloat2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px,-30px) scale(1.08); } }
+@keyframes bgFloat3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-20px,25px) scale(0.95); } }
 .hero-content {
   max-width: 700px;
   position: relative; z-index: 2;
@@ -232,17 +328,20 @@ nav {
   color: var(--text-dim);
   margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeUp 0.6s ease 1.4s forwards;
+  animation: fadeUp 0.6s ease 2s forwards;
+  backdrop-filter: blur(10px);
+  background: rgba(253,252,249,0.5);
 }
 .hero-badge .dot {
   width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--green);
   animation: dotPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(74,124,89,0.4);
 }
 @keyframes dotPulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.6); }
+  0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 4px rgba(74,124,89,0.3); }
+  50% { opacity: 0.5; transform: scale(0.6); box-shadow: 0 0 8px rgba(74,124,89,0.5); }
 }
 .hero-title {
   font-family: var(--serif);
@@ -251,12 +350,16 @@ nav {
   line-height: 1.05;
   letter-spacing: -2px;
   margin-bottom: 1.5rem;
+}
+.hero-title .line {
+  display: block;
   overflow: hidden;
+  padding-bottom: 4px;
 }
 .hero-title .word {
   display: inline-block;
   opacity: 0;
-  transform: translateY(100%) rotateX(-80deg);
+  transform: translateY(110%) rotateX(-80deg);
   transform-origin: bottom center;
 }
 .hero-title .green { color: var(--green); }
@@ -268,16 +371,20 @@ nav {
   max-width: 480px;
   margin-bottom: 2.5rem;
   opacity: 0;
-  animation: fadeUp 0.7s ease 2.2s forwards;
+}
+.hero-desc.visible {
+  animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(25px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .hero-btns {
   display: flex; gap: 1rem;
   opacity: 0;
-  animation: fadeUp 0.6s ease 2.5s forwards;
+}
+.hero-btns.visible {
+  animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s forwards;
 }
 .btn-primary {
   padding: 0.9rem 2.5rem;
@@ -294,13 +401,24 @@ nav {
 }
 .btn-primary::before {
   content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s;
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  transition: width 0.6s, height 0.6s;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,124,89,0.25); }
-.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(74,124,89,0.3); }
+.btn-primary:hover::before { width: 300px; height: 300px; }
+.btn-primary::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: translateX(-100%);
+  animation: btnShine 3s ease-in-out infinite 3s;
+}
+@keyframes btnShine { 0% { transform: translateX(-100%); } 30% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
 .btn-secondary {
   padding: 0.9rem 2.5rem;
   background: none;
@@ -310,122 +428,198 @@ nav {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text);
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+  overflow: hidden;
+}
+.btn-secondary::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--green-dim);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
 }
 .btn-secondary:hover { border-color: var(--green); color: var(--green); }
+.btn-secondary:hover::before { transform: scaleY(1); }
+
+/* Hero Plant */
 .hero-visual {
   position: absolute;
   right: 3rem; top: 50%;
   transform: translateY(-50%);
-  width: 500px; height: 600px;
+  width: 500px; height: 620px;
   z-index: 1;
 }
 .hero-plant {
   width: 100%; height: 100%;
   position: relative;
   opacity: 0;
-  animation: plantIn 1s cubic-bezier(0.16,1,0.3,1) 1.6s forwards;
+  animation: plantIn 1.2s cubic-bezier(0.16,1,0.3,1) 2.2s forwards;
 }
-@keyframes plantIn { from { opacity: 0; transform: scale(0.8) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes plantIn { from { opacity: 0; transform: scale(0.7) translateY(60px) rotate(-3deg); } to { opacity: 1; transform: scale(1) translateY(0) rotate(0); } }
 .hero-pot {
   position: absolute;
-  bottom: 50px; left: 50%;
+  bottom: 40px; left: 50%;
   transform: translateX(-50%);
   width: 180px; height: 160px;
-  background: var(--terracotta);
-  border-radius: 10px 10px 30px 30px;
-  opacity: 0.85;
+  background: linear-gradient(135deg, var(--terracotta), #D4845E);
+  border-radius: 10px 10px 35px 35px;
+  box-shadow: 0 20px 50px rgba(196,114,90,0.2);
 }
 .hero-pot::before {
   content: '';
   position: absolute;
-  top: -12px; left: -10px;
-  width: calc(100% + 20px); height: 24px;
-  background: var(--terracotta);
-  border-radius: 6px;
-  opacity: 0.9;
+  top: -14px; left: -12px;
+  width: calc(100% + 24px); height: 28px;
+  background: linear-gradient(135deg, var(--terracotta), #D4845E);
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(196,114,90,0.15);
 }
 .hero-pot::after {
   content: '';
   position: absolute;
-  top: 0; left: 50%; transform: translateX(-50%);
-  width: 1px; height: 100%;
-  background: rgba(255,255,255,0.1);
+  top: 10px; left: 30%;
+  width: 40%; height: 80%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+  filter: blur(10px);
+}
+.pot-soil {
+  position: absolute;
+  bottom: 192px; left: calc(50% - 75px);
+  width: 150px; height: 20px;
+  background: #5D3E28;
+  border-radius: 50%;
+  opacity: 0.4;
 }
 .hero-stem {
   position: absolute;
-  bottom: 200px; left: 50%;
-  width: 3px; height: 250px;
-  background: linear-gradient(to top, #3D6B4A, #6B9E78);
+  bottom: 210px; left: 50%;
+  width: 4px; height: 280px;
+  background: linear-gradient(to top, #3D6B4A, #5A8F6A, #6B9E78);
   transform: translateX(-50%);
-  transform-origin: bottom;
+  border-radius: 2px;
 }
 .hero-leaf-shape {
   position: absolute;
   border-radius: 50% 0 50% 0;
-  animation: leafSway 4s ease-in-out infinite;
+  animation: leafSway var(--dur, 4s) ease-in-out infinite;
+  transition: filter 0.3s;
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.05);
 }
 @keyframes leafSway {
-  0%,100% { transform: rotate(var(--r, 0deg)); }
-  50% { transform: rotate(calc(var(--r, 0deg) + 5deg)); }
+  0%,100% { transform: rotate(var(--r, 0deg)) scale(1); }
+  50% { transform: rotate(calc(var(--r, 0deg) + 6deg)) scale(1.02); }
 }
-.hl1 { width: 120px; height: 80px; background: #4A7C59; bottom: 320px; left: calc(50% - 130px); --r: -25deg; opacity: 0.9; }
-.hl2 { width: 100px; height: 65px; background: #6B9E78; bottom: 370px; left: calc(50% + 20px); --r: 20deg; animation-delay: 0.5s; }
-.hl3 { width: 130px; height: 85px; background: #5A8F6A; bottom: 280px; left: calc(50% + 30px); --r: 30deg; animation-delay: 1s; }
-.hl4 { width: 90px; height: 60px; background: #8FBC8F; bottom: 400px; left: calc(50% - 90px); --r: -35deg; animation-delay: 1.5s; opacity: 0.7; }
-.hl5 { width: 110px; height: 70px; background: #4A7C59; bottom: 430px; left: calc(50% + 10px); --r: 15deg; animation-delay: 0.8s; opacity: 0.8; }
+.hl1 { width: 140px; height: 90px; background: linear-gradient(135deg, #3D6B4A, #4A7C59); bottom: 350px; left: calc(50% - 155px); --r: -25deg; --dur: 4.5s; }
+.hl2 { width: 120px; height: 78px; background: linear-gradient(135deg, #5A8F6A, #6B9E78); bottom: 400px; left: calc(50% + 25px); --r: 22deg; --dur: 3.8s; animation-delay: 0.5s; }
+.hl3 { width: 150px; height: 95px; background: linear-gradient(135deg, #4A7C59, #5A8F6A); bottom: 300px; left: calc(50% + 35px); --r: 32deg; --dur: 5s; animation-delay: 1s; }
+.hl4 { width: 100px; height: 65px; background: linear-gradient(135deg, #6B9E78, #8FBC8F); bottom: 440px; left: calc(50% - 110px); --r: -38deg; --dur: 3.5s; animation-delay: 1.5s; opacity: 0.8; }
+.hl5 { width: 130px; height: 82px; background: linear-gradient(135deg, #3D6B4A, #4A7C59); bottom: 470px; left: calc(50% + 15px); --r: 18deg; --dur: 4.2s; animation-delay: 0.8s; }
+.hl6 { width: 90px; height: 58px; background: linear-gradient(135deg, #8FBC8F, #A8C5A0); bottom: 280px; left: calc(50% - 120px); --r: -15deg; --dur: 5.5s; animation-delay: 2s; opacity: 0.7; }
+.hl7 { width: 110px; height: 70px; background: linear-gradient(135deg, #5A8F6A, #6B9E78); bottom: 500px; left: calc(50% - 60px); --r: -8deg; --dur: 4s; animation-delay: 1.2s; opacity: 0.75; }
+.leaf-vein {
+  position: absolute;
+  width: 1px;
+  height: 60%;
+  background: rgba(255,255,255,0.15);
+  top: 20%; left: 50%;
+  transform: rotate(var(--r, 0deg));
+}
+
 .hero-price-tag {
   position: absolute;
-  top: 100px; right: 20px;
-  padding: 12px 20px;
+  top: 80px; right: 10px;
+  padding: 14px 22px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+  opacity: 0;
+  animation: tagFloat 1s cubic-bezier(0.16,1,0.3,1) 3s forwards;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+}
+@keyframes tagFloat {
+  from { opacity: 0; transform: translateY(15px) rotate(5deg) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) rotate(3deg) scale(1); }
+}
+.tag-name { font-family: var(--serif); font-size: 0.9rem; margin-bottom: 3px; }
+.tag-latin { font-size: 0.65rem; color: var(--text-dim); font-style: italic; margin-bottom: 8px; }
+.tag-price { font-size: 1.2rem; font-weight: 600; color: var(--green); }
+.tag-stars { font-size: 0.6rem; color: var(--green); letter-spacing: 1px; margin-top: 4px; }
+
+.hero-trust-tag {
+  position: absolute;
+  bottom: 100px; right: 60px;
+  padding: 10px 16px;
   background: white;
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.04);
   opacity: 0;
-  animation: tagFloat 0.8s ease 2.8s forwards;
+  animation: tagFloat 1s cubic-bezier(0.16,1,0.3,1) 3.3s forwards;
   z-index: 3;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.7rem;
 }
-@keyframes tagFloat {
-  from { opacity: 0; transform: translateY(10px) rotate(3deg); }
-  to { opacity: 1; transform: translateY(0) rotate(3deg); }
+.trust-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem;
 }
-.tag-name { font-family: var(--serif); font-size: 0.85rem; margin-bottom: 2px; }
-.tag-latin { font-size: 0.65rem; color: var(--text-dim); font-style: italic; margin-bottom: 6px; }
-.tag-price { font-size: 1.1rem; font-weight: 600; color: var(--green); }
+.trust-text { color: var(--text-dim); }
+.trust-text strong { color: var(--text); display: block; }
 
 /* ===== MARQUEE ===== */
 .marquee {
-  padding: 1rem 0;
+  padding: 1.25rem 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   overflow: hidden;
   white-space: nowrap;
+  position: relative;
 }
+.marquee::before, .marquee::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0;
+  width: 100px; z-index: 2;
+}
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+.marquee::after { right: 0; background: linear-gradient(90deg, transparent, var(--bg)); }
 .marquee-track {
   display: flex;
-  animation: marquee 30s linear infinite;
+  animation: marquee 35s linear infinite;
 }
+.marquee:hover .marquee-track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 .marquee-item {
   font-family: var(--serif);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text-muted);
   padding: 0 2rem;
   flex-shrink: 0;
+  transition: color 0.3s;
 }
-.marquee-item .sep { color: var(--green); margin-left: 2rem; }
+.marquee-item:hover { color: var(--green); }
+.marquee-item .sep { color: var(--green); margin-left: 2rem; font-size: 0.7rem; }
 
-/* ===== SECTION HEADERS ===== */
+/* ===== SECTION SHARED ===== */
 .section-label {
   font-size: 0.6rem;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--green);
   margin-bottom: 1rem;
+  opacity: 0;
+  transform: translateY(15px);
 }
+.section-label.visible { animation: fadeUp 0.5s ease forwards; }
 .section-title {
   font-family: var(--serif);
   font-size: clamp(2rem, 4vw, 3rem);
@@ -433,18 +627,25 @@ nav {
   letter-spacing: -1px;
   line-height: 1.15;
   margin-bottom: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
 }
+.section-title.visible { animation: fadeUp 0.6s ease 0.1s forwards; }
 .section-desc {
   font-size: 0.95rem;
   color: var(--text-dim);
   line-height: 1.7;
   font-weight: 300;
   max-width: 500px;
+  opacity: 0;
+  transform: translateY(15px);
 }
+.section-desc.visible { animation: fadeUp 0.6s ease 0.2s forwards; }
 
 /* ===== CATEGORIES ===== */
 .categories {
   padding: 6rem 3rem;
+  position: relative;
 }
 .categories-header {
   display: flex;
@@ -458,7 +659,7 @@ nav {
   gap: 1.5rem;
 }
 .cat-card {
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
   position: relative;
   aspect-ratio: 3/4;
@@ -466,61 +667,92 @@ nav {
   border: 1px solid var(--border);
   transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(50px) scale(0.95);
 }
-.cat-card.visible { opacity: 1; transform: translateY(0); }
-.cat-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
-.cat-card:hover .cat-plant { transform: scale(1.05); }
+.cat-card.visible { opacity: 1; transform: translateY(0) scale(1); transition-delay: var(--d, 0s); }
+.cat-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 25px 60px rgba(0,0,0,0.08); border-color: var(--green-dim); }
+.cat-card:hover .cat-plant-inner { transform: scale(1.08) translateY(-5px); }
+.cat-card:hover .cat-glow { opacity: 1; }
+.cat-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, var(--green-dim), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
 .cat-plant {
   width: 100%; height: 70%;
   display: flex; align-items: center; justify-content: center;
-  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  overflow: hidden;
 }
-.cat-plant-shape {
+.cat-plant-inner {
   position: relative;
   display: flex; flex-direction: column; align-items: center;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
 }
 .cat-pot {
-  width: 60px; height: 55px;
-  border-radius: 6px 6px 16px 16px;
+  width: 65px; height: 58px;
+  border-radius: 6px 6px 18px 18px;
   position: relative;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 .cat-pot::before {
   content: '';
   position: absolute;
-  top: -6px; left: -4px;
-  width: calc(100% + 8px); height: 12px;
-  border-radius: 4px;
+  top: -7px; left: -5px;
+  width: calc(100% + 10px); height: 14px;
+  border-radius: 5px;
   background: inherit;
-  opacity: 0.85;
+  opacity: 0.9;
 }
-.cat-pot.terra { background: var(--terracotta); }
-.cat-pot.white-pot { background: #E8E4DE; }
-.cat-pot.dark-pot { background: #3A3A3A; }
-.cat-pot.sage-pot { background: var(--sage); }
+.cat-pot.terra { background: linear-gradient(135deg, var(--terracotta), #D4845E); }
+.cat-pot.white-pot { background: linear-gradient(135deg, #E8E4DE, #F0EDE8); }
+.cat-pot.dark-pot { background: linear-gradient(135deg, #3A3A3A, #4A4A4A); }
+.cat-pot.sage-pot { background: linear-gradient(135deg, var(--sage), #B8D4B0); }
 .cat-leaf {
   border-radius: 50% 0 50% 0;
   position: absolute;
-  animation: leafSway 3.5s ease-in-out infinite;
+  animation: leafSway var(--dur, 3.5s) ease-in-out infinite;
+  box-shadow: 1px 2px 6px rgba(0,0,0,0.04);
 }
 .cat-info {
-  padding: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  position: relative;
 }
 .cat-name {
   font-family: var(--serif);
-  font-size: 1.1rem;
-  margin-bottom: 2px;
+  font-size: 1.15rem;
+  margin-bottom: 4px;
 }
 .cat-count {
   font-size: 0.7rem;
   color: var(--text-dim);
   letter-spacing: 1px;
 }
+.cat-arrow {
+  position: absolute;
+  right: 1.5rem; top: 50%;
+  transform: translateY(-50%) translateX(-5px);
+  opacity: 0;
+  color: var(--green);
+  font-size: 1rem;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.cat-card:hover .cat-arrow { opacity: 1; transform: translateY(-50%) translateX(0); }
 
-/* ===== FEATURED PRODUCTS ===== */
+/* ===== FEATURED ===== */
 .featured {
   padding: 4rem 3rem 6rem;
   background: var(--warm);
+  position: relative;
+  overflow: hidden;
+}
+.featured::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
 }
 .featured-header {
   display: flex;
@@ -535,123 +767,167 @@ nav {
 }
 .product-card {
   background: white;
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
   border: 1px solid var(--border);
-  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(50px);
   position: relative;
 }
 .product-card.visible { opacity: 1; transform: translateY(0); }
-.product-card:hover { transform: translateY(-6px); box-shadow: 0 16px 50px rgba(0,0,0,0.07); }
+.product-card:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.08); border-color: rgba(74,124,89,0.1); }
+.product-card:hover .product-img-bg { transform: scale(1.05); }
+.product-card:hover .product-quick { bottom: 16px; opacity: 1; }
 .product-img {
-  height: 280px;
+  height: 300px;
   background: var(--cream);
   display: flex; align-items: center; justify-content: center;
   position: relative;
   overflow: hidden;
 }
-.product-img::after {
-  content: 'Quick view';
+.product-img-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 60%, var(--green-dim), transparent 70%);
+  opacity: 0.5;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.product-quick {
   position: absolute;
-  bottom: -40px;
-  left: 50%; transform: translateX(-50%);
-  padding: 8px 20px;
+  bottom: -50px; left: 50%; transform: translateX(-50%);
+  padding: 10px 24px;
   background: var(--green);
   color: white;
+  border: none;
   border-radius: 50px;
   font-size: 0.65rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1);
   white-space: nowrap;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: 0 8px 25px rgba(74,124,89,0.3);
+  z-index: 2;
+  font-family: var(--sans);
 }
-.product-card:hover .product-img::after { bottom: 16px; }
 .product-badge {
-  position: absolute; top: 12px; left: 12px;
-  padding: 4px 12px;
+  position: absolute; top: 14px; left: 14px;
+  padding: 5px 14px;
   border-radius: 50px;
   font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
+  z-index: 2;
 }
 .badge-new { background: var(--green); color: white; }
 .badge-sale { background: var(--terracotta); color: white; }
 .badge-popular { background: var(--text); color: white; }
+.product-wishlist {
+  position: absolute; top: 14px; right: 14px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: var(--text-muted);
+  z-index: 2;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.product-wishlist:hover { color: var(--terracotta); border-color: var(--terracotta); transform: scale(1.1); }
 .product-plant-display {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 1;
 }
 .p-pot {
-  width: 50px; height: 45px;
-  border-radius: 5px 5px 14px 14px;
+  width: 55px; height: 48px;
+  border-radius: 5px 5px 16px 16px;
   position: relative;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 .p-pot::before {
   content: '';
   position: absolute;
-  top: -5px; left: -3px;
-  width: calc(100% + 6px); height: 10px;
-  border-radius: 3px;
-  background: inherit; opacity: 0.85;
+  top: -6px; left: -4px;
+  width: calc(100% + 8px); height: 12px;
+  border-radius: 4px;
+  background: inherit; opacity: 0.9;
 }
 .p-leaf {
   position: absolute;
   border-radius: 50% 0 50% 0;
-  animation: leafSway 4s ease-in-out infinite;
+  animation: leafSway var(--dur, 4s) ease-in-out infinite;
+  box-shadow: 1px 3px 8px rgba(0,0,0,0.04);
 }
-.product-info { padding: 1.25rem; }
-.product-name { font-family: var(--serif); font-size: 1rem; margin-bottom: 2px; }
-.product-latin { font-size: 0.7rem; color: var(--text-dim); font-style: italic; margin-bottom: 8px; }
+.product-info { padding: 1.5rem; }
+.product-name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  margin-bottom: 3px;
+  transition: color 0.3s;
+}
+.product-card:hover .product-name { color: var(--green); }
+.product-latin { font-size: 0.7rem; color: var(--text-dim); font-style: italic; margin-bottom: 10px; }
 .product-bottom { display: flex; justify-content: space-between; align-items: center; }
-.product-price { font-size: 1.1rem; font-weight: 600; color: var(--green); }
+.product-price { font-size: 1.15rem; font-weight: 600; color: var(--green); }
 .product-price .old { text-decoration: line-through; color: var(--text-muted); font-weight: 300; font-size: 0.85rem; margin-right: 6px; }
 .product-add {
-  width: 36px; height: 36px;
+  width: 40px; height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: none;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   display: flex; align-items: center; justify-content: center;
   color: var(--text-dim);
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
 }
-.product-add:hover { background: var(--green); color: white; border-color: var(--green); }
+.product-add:hover { background: var(--green); color: white; border-color: var(--green); transform: rotate(90deg) scale(1.1); }
 .product-care {
-  display: flex; gap: 12px;
-  margin-top: 8px;
+  display: flex; gap: 14px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
 }
 .care-icon {
   font-size: 0.6rem;
   color: var(--text-muted);
-  display: flex; align-items: center; gap: 3px;
+  display: flex; align-items: center; gap: 4px;
 }
 
 /* ===== STATS ===== */
 .stats {
-  padding: 4rem 3rem;
+  padding: 5rem 3rem;
   display: flex;
   justify-content: center;
-  gap: 4rem;
-  border-bottom: 1px solid var(--border);
+  gap: 5rem;
+  position: relative;
 }
+.stats::before, .stats::after {
+  content: '';
+  position: absolute; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.stats::before { top: 0; }
+.stats::after { bottom: 0; }
 .stat {
   text-align: center;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px) scale(0.9);
 }
-.stat.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease; }
+.stat.visible { opacity: 1; transform: translateY(0) scale(1); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
 .stat-num {
   font-family: var(--serif);
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 400;
   color: var(--green);
   line-height: 1;
   margin-bottom: 0.5rem;
+  position: relative;
 }
 .stat-label {
   font-size: 0.7rem;
@@ -659,10 +935,16 @@ nav {
   text-transform: uppercase;
   color: var(--text-dim);
 }
+.stat-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
 
-/* ===== HOW IT WORKS ===== */
+/* ===== HOW ===== */
 .how {
   padding: 6rem 3rem;
+  background: var(--cream);
 }
 .how-header { text-align: center; margin-bottom: 4rem; }
 .how-header .section-desc { margin: 0 auto; }
@@ -675,31 +957,38 @@ nav {
 .how-steps::before {
   content: '';
   position: absolute;
-  top: 40px; left: 10%; right: 10%;
+  top: 48px; left: 12%; right: 12%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), var(--border), transparent);
+  background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 8px, transparent 8px, transparent 16px);
 }
 .how-step {
   text-align: center;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(40px);
 }
 .how-step.visible { opacity: 1; transform: translateY(0); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
 .step-num {
-  width: 80px; height: 80px;
+  width: 96px; height: 96px;
   border-radius: 50%;
   border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 1.5rem;
   font-family: var(--serif);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: var(--green);
   background: white;
   position: relative;
   z-index: 1;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
 }
-.how-step:hover .step-num { background: var(--green); color: white; border-color: var(--green); transform: scale(1.1); }
+.how-step:hover .step-num {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 12px 35px rgba(74,124,89,0.2);
+}
 .step-title {
   font-family: var(--serif);
   font-size: 1.15rem;
@@ -714,7 +1003,6 @@ nav {
 /* ===== TESTIMONIALS ===== */
 .testimonials {
   padding: 6rem 3rem;
-  background: var(--warm);
 }
 .testimonials-header { text-align: center; margin-bottom: 3rem; }
 .testimonials-grid {
@@ -727,25 +1015,37 @@ nav {
 .testimonial {
   background: white;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 24px;
   padding: 2rem;
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.4s;
+  transform: translateY(40px) rotate(1deg);
+  position: relative;
+  overflow: hidden;
 }
-.testimonial.visible { opacity: 1; transform: translateY(0); }
-.testimonial:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.05); }
+.testimonial.visible { opacity: 1; transform: translateY(0) rotate(0); transition: all 0.6s cubic-bezier(0.16,1,0.3,1); }
+.testimonial:hover { transform: translateY(-6px); box-shadow: 0 16px 50px rgba(0,0,0,0.06); }
+.testimonial::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--green-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.testimonial:hover::before { transform: scaleX(1); }
+.test-quote { font-family: var(--serif); font-size: 2.5rem; color: var(--green); opacity: 0.15; line-height: 1; margin-bottom: 0.5rem; }
 .test-stars { color: var(--green); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
 .test-text { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 1.25rem; font-style: italic; }
-.test-author { display: flex; align-items: center; gap: 10px; }
+.test-author { display: flex; align-items: center; gap: 12px; }
 .test-avatar {
-  width: 36px; height: 36px;
+  width: 40px; height: 40px;
   border-radius: 50%;
-  background: var(--green-dim);
+  background: linear-gradient(135deg, var(--green-dim), var(--sage));
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem; font-weight: 600; color: var(--green);
+  font-size: 0.75rem; font-weight: 600; color: var(--green);
 }
-.test-name { font-size: 0.8rem; font-weight: 500; }
+.test-name { font-size: 0.85rem; font-weight: 500; }
 .test-loc { font-size: 0.65rem; color: var(--text-muted); }
 
 /* ===== NEWSLETTER ===== */
@@ -754,28 +1054,38 @@ nav {
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: var(--warm);
 }
 .newsletter-bg {
   position: absolute;
-  width: 500px; height: 500px;
+  width: 600px; height: 600px;
   border-radius: 50%;
   background: var(--green-dim);
-  filter: blur(100px);
+  filter: blur(120px);
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  opacity: 0.5;
+  opacity: 0.4;
+  animation: bgFloat1 20s ease-in-out infinite;
 }
+.newsletter-leaf {
+  position: absolute;
+  border-radius: 50% 0 50% 0;
+  background: var(--green);
+  opacity: 0.04;
+}
+.newsletter-leaf:nth-child(2) { width: 200px; height: 130px; top: 40px; left: 80px; transform: rotate(-25deg); }
+.newsletter-leaf:nth-child(3) { width: 160px; height: 100px; bottom: 30px; right: 120px; transform: rotate(20deg); }
 .newsletter-content { position: relative; z-index: 1; }
 .newsletter .section-desc { margin: 0 auto 2rem; }
 .newsletter-form {
   display: flex;
   gap: 0.75rem;
-  max-width: 460px;
+  max-width: 480px;
   margin: 0 auto;
 }
 .newsletter-input {
   flex: 1;
-  padding: 0.9rem 1.5rem;
+  padding: 1rem 1.5rem;
   border: 1px solid var(--border);
   border-radius: 50px;
   font-size: 0.85rem;
@@ -783,12 +1093,13 @@ nav {
   background: white;
   color: var(--text);
   outline: none;
-  transition: border-color 0.3s;
+  transition: all 0.4s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
 }
-.newsletter-input:focus { border-color: var(--green); }
+.newsletter-input:focus { border-color: var(--green); box-shadow: 0 4px 20px rgba(74,124,89,0.1); }
 .newsletter-input::placeholder { color: var(--text-muted); }
 .newsletter-btn {
-  padding: 0.9rem 2rem;
+  padding: 1rem 2rem;
   background: var(--green);
   color: white;
   border: none;
@@ -797,10 +1108,11 @@ nav {
   letter-spacing: 2px;
   text-transform: uppercase;
   font-family: var(--sans);
-  transition: all 0.3s;
+  transition: all 0.4s;
   white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(74,124,89,0.2);
 }
-.newsletter-btn:hover { background: var(--olive); transform: translateY(-2px); }
+.newsletter-btn:hover { background: var(--olive); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74,124,89,0.3); }
 
 /* ===== FOOTER ===== */
 footer {
@@ -838,9 +1150,11 @@ footer {
   font-size: 0.8rem;
   color: var(--text-dim);
   margin-bottom: 0.6rem;
-  transition: color 0.2s;
+  transition: all 0.3s;
+  position: relative;
+  padding-left: 0;
 }
-.footer-col a:hover { color: var(--green); }
+.footer-col a:hover { color: var(--green); padding-left: 6px; }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -861,15 +1175,11 @@ footer {
 }
 @media (max-width: 768px) {
   body { cursor: auto; }
-  .cursor, .cursor-dot { display: none; }
+  .cursor, .cursor-dot, .cursor-trail { display: none; }
   nav { padding: 1rem 1.5rem; }
-  .nav-links a { display: none; }
-  .hero { padding: 0 1.5rem; }
-  .categories, .featured, .how, .testimonials, .newsletter { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .categories-grid { grid-template-columns: 1fr; }
-  .products-grid { grid-template-columns: 1fr; }
-  .how-steps { grid-template-columns: 1fr; }
-  .testimonials-grid { grid-template-columns: 1fr; }
+  .nav-links a:not(.nav-cart) { display: none; }
+  .hero, .categories, .featured, .how, .testimonials, .newsletter { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .categories-grid, .products-grid, .how-steps, .testimonials-grid { grid-template-columns: 1fr; }
   .stats { flex-direction: column; gap: 2rem; }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
@@ -890,14 +1200,20 @@ footer {
 
 <!-- Loader -->
 <div class="loader">
-  <div class="loader-leaf"></div>
-  <div class="loader-text">
-    <span style="animation-delay:0.1s">F</span>
-    <span style="animation-delay:0.2s">L</span>
-    <span style="animation-delay:0.3s">Ō</span>
-    <span style="animation-delay:0.4s">R</span>
-    <span style="animation-delay:0.5s">A</span>
+  <div class="loader-plant">
+    <div class="loader-pot"></div>
+    <div class="loader-stem"></div>
+    <div class="loader-leaf-l"></div>
+    <div class="loader-leaf-r"></div>
   </div>
+  <div class="loader-text">
+    <span style="animation-delay:1.2s">F</span>
+    <span style="animation-delay:1.3s">L</span>
+    <span style="animation-delay:1.4s">Ō</span>
+    <span style="animation-delay:1.5s">R</span>
+    <span style="animation-delay:1.6s">A</span>
+  </div>
+  <div class="loader-bar"></div>
 </div>
 
 <!-- Nav -->
@@ -908,7 +1224,7 @@ footer {
     <a href="#" class="hoverable">Collections</a>
     <a href="#" class="hoverable">Care Guide</a>
     <a href="#" class="hoverable">About</a>
-    <button class="nav-cart hoverable">Cart <span class="count">2</span></button>
+    <button class="nav-cart hoverable"><span>Cart</span> <span class="count">2</span></button>
   </div>
 </nav>
 
@@ -920,14 +1236,11 @@ footer {
   <div class="hero-content">
     <div class="hero-badge"><span class="dot"></span> Free shipping on orders over €50</div>
     <h1 class="hero-title">
-      <span class="word">Bring</span>
-      <span class="word green">nature</span>
-      <span class="word">into</span><br>
-      <span class="word">your</span>
-      <span class="word">home</span>
+      <span class="line"><span class="word">Bring</span> <span class="word green">nature</span> <span class="word">into</span></span>
+      <span class="line"><span class="word">your</span> <span class="word">home</span></span>
     </h1>
-    <p class="hero-desc">Curated plants for every space and skill level. From low-light survivors to statement tropicals — delivered to your door with care instructions included.</p>
-    <div class="hero-btns">
+    <p class="hero-desc reveal">Curated plants for every space and skill level. From low-light survivors to statement tropicals — delivered to your door with care instructions included.</p>
+    <div class="hero-btns reveal">
       <button class="btn-primary hoverable">Shop collection</button>
       <button class="btn-secondary hoverable">Care guide</button>
     </div>
@@ -935,17 +1248,25 @@ footer {
   <div class="hero-visual">
     <div class="hero-plant">
       <div class="hero-stem"></div>
-      <div class="hero-leaf-shape hl1"></div>
-      <div class="hero-leaf-shape hl2"></div>
-      <div class="hero-leaf-shape hl3"></div>
+      <div class="hero-leaf-shape hl1"><div class="leaf-vein" style="--r:-25deg;"></div></div>
+      <div class="hero-leaf-shape hl2"><div class="leaf-vein" style="--r:22deg;"></div></div>
+      <div class="hero-leaf-shape hl3"><div class="leaf-vein" style="--r:32deg;"></div></div>
       <div class="hero-leaf-shape hl4"></div>
-      <div class="hero-leaf-shape hl5"></div>
+      <div class="hero-leaf-shape hl5"><div class="leaf-vein" style="--r:18deg;"></div></div>
+      <div class="hero-leaf-shape hl6"></div>
+      <div class="hero-leaf-shape hl7"></div>
+      <div class="pot-soil"></div>
       <div class="hero-pot"></div>
     </div>
     <div class="hero-price-tag">
       <div class="tag-name">Monstera Deliciosa</div>
       <div class="tag-latin">Swiss Cheese Plant</div>
       <div class="tag-price">€45</div>
+      <div class="tag-stars">★★★★★ 4.9</div>
+    </div>
+    <div class="hero-trust-tag">
+      <div class="trust-icon">🌿</div>
+      <div class="trust-text"><strong>12,000+ delivered</strong>98% survival rate</div>
     </div>
   </div>
 </section>
@@ -976,54 +1297,50 @@ footer {
 <section class="categories">
   <div class="categories-header">
     <div>
-      <div class="section-label">Collections</div>
-      <div class="section-title">Shop by category</div>
+      <div class="section-label reveal">Collections</div>
+      <div class="section-title reveal">Shop by category</div>
     </div>
     <a href="#" class="btn-secondary hoverable" style="font-size:0.65rem;">View all</a>
   </div>
   <div class="categories-grid">
-    <div class="cat-card hoverable">
-      <div class="cat-plant">
-        <div class="cat-plant-shape">
-          <div class="cat-leaf" style="width:70px;height:45px;background:#4A7C59;bottom:55px;left:-40px;--r:-30deg;"></div>
-          <div class="cat-leaf" style="width:60px;height:40px;background:#6B9E78;bottom:65px;left:15px;--r:25deg;animation-delay:0.6s;"></div>
-          <div class="cat-leaf" style="width:75px;height:50px;background:#5A8F6A;bottom:45px;left:5px;--r:35deg;animation-delay:1.2s;"></div>
-          <div class="cat-pot terra"></div>
-        </div>
-      </div>
-      <div class="cat-info"><div class="cat-name">Indoor Plants</div><div class="cat-count">42 plants</div></div>
+    <div class="cat-card hoverable" style="--d:0s">
+      <div class="cat-glow"></div>
+      <div class="cat-plant"><div class="cat-plant-inner">
+        <div class="cat-leaf" style="width:80px;height:52px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:60px;left:-48px;--r:-30deg;--dur:4s;"></div>
+        <div class="cat-leaf" style="width:68px;height:44px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:72px;left:18px;--r:25deg;--dur:3.5s;animation-delay:0.6s;"></div>
+        <div class="cat-leaf" style="width:85px;height:55px;background:linear-gradient(135deg,#4A7C59,#5A8F6A);bottom:48px;left:8px;--r:35deg;--dur:4.5s;animation-delay:1.2s;"></div>
+        <div class="cat-pot terra"></div>
+      </div></div>
+      <div class="cat-info"><div class="cat-name">Indoor Plants</div><div class="cat-count">42 plants</div><span class="cat-arrow">→</span></div>
     </div>
-    <div class="cat-card hoverable">
-      <div class="cat-plant">
-        <div class="cat-plant-shape">
-          <div class="cat-leaf" style="width:25px;height:50px;background:#6B9E78;bottom:55px;left:-5px;--r:0deg;border-radius:40% 40% 0 0;"></div>
-          <div class="cat-leaf" style="width:20px;height:40px;background:#8FBC8F;bottom:50px;left:12px;--r:10deg;border-radius:40% 40% 0 0;animation-delay:0.4s;"></div>
-          <div class="cat-leaf" style="width:22px;height:45px;background:#4A7C59;bottom:52px;left:-18px;--r:-8deg;border-radius:40% 40% 0 0;animation-delay:0.8s;"></div>
-          <div class="cat-pot white-pot"></div>
-        </div>
-      </div>
-      <div class="cat-info"><div class="cat-name">Succulents</div><div class="cat-count">28 plants</div></div>
+    <div class="cat-card hoverable" style="--d:0.1s">
+      <div class="cat-glow"></div>
+      <div class="cat-plant"><div class="cat-plant-inner">
+        <div class="cat-leaf" style="width:28px;height:55px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:58px;left:-6px;--r:0deg;border-radius:40% 40% 0 0;--dur:3.8s;"></div>
+        <div class="cat-leaf" style="width:22px;height:45px;background:linear-gradient(135deg,#6B9E78,#8FBC8F);bottom:54px;left:14px;--r:10deg;border-radius:40% 40% 0 0;--dur:4.2s;animation-delay:0.4s;"></div>
+        <div class="cat-leaf" style="width:25px;height:50px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:56px;left:-20px;--r:-8deg;border-radius:40% 40% 0 0;--dur:3.5s;animation-delay:0.8s;"></div>
+        <div class="cat-pot white-pot"></div>
+      </div></div>
+      <div class="cat-info"><div class="cat-name">Succulents</div><div class="cat-count">28 plants</div><span class="cat-arrow">→</span></div>
     </div>
-    <div class="cat-card hoverable">
-      <div class="cat-plant">
-        <div class="cat-plant-shape">
-          <div class="cat-leaf" style="width:90px;height:55px;background:#3D6B4A;bottom:55px;left:-50px;--r:-20deg;"></div>
-          <div class="cat-leaf" style="width:85px;height:50px;background:#4A7C59;bottom:70px;left:0px;--r:15deg;animation-delay:0.7s;"></div>
-          <div class="cat-leaf" style="width:80px;height:45px;background:#6B9E78;bottom:50px;left:10px;--r:30deg;animation-delay:1.3s;"></div>
-          <div class="cat-pot dark-pot"></div>
-        </div>
-      </div>
-      <div class="cat-info"><div class="cat-name">Tropical</div><div class="cat-count">35 plants</div></div>
+    <div class="cat-card hoverable" style="--d:0.2s">
+      <div class="cat-glow"></div>
+      <div class="cat-plant"><div class="cat-plant-inner">
+        <div class="cat-leaf" style="width:100px;height:62px;background:linear-gradient(135deg,#2F5B3D,#3D6B4A);bottom:60px;left:-58px;--r:-22deg;--dur:5s;"></div>
+        <div class="cat-leaf" style="width:95px;height:58px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:78px;left:2px;--r:18deg;--dur:4s;animation-delay:0.7s;"></div>
+        <div class="cat-leaf" style="width:88px;height:52px;background:linear-gradient(135deg,#4A7C59,#6B9E78);bottom:52px;left:12px;--r:32deg;--dur:4.5s;animation-delay:1.3s;"></div>
+        <div class="cat-pot dark-pot"></div>
+      </div></div>
+      <div class="cat-info"><div class="cat-name">Tropical</div><div class="cat-count">35 plants</div><span class="cat-arrow">→</span></div>
     </div>
-    <div class="cat-card hoverable">
-      <div class="cat-plant">
-        <div class="cat-plant-shape">
-          <div class="cat-leaf" style="width:35px;height:80px;background:#6B9E78;bottom:55px;left:-10px;--r:-5deg;border-radius:50%;"></div>
-          <div class="cat-leaf" style="width:30px;height:70px;background:#8FBC8F;bottom:50px;left:8px;--r:8deg;border-radius:50%;animation-delay:0.5s;"></div>
-          <div class="cat-pot sage-pot"></div>
-        </div>
-      </div>
-      <div class="cat-info"><div class="cat-name">Cacti</div><div class="cat-count">19 plants</div></div>
+    <div class="cat-card hoverable" style="--d:0.3s">
+      <div class="cat-glow"></div>
+      <div class="cat-plant"><div class="cat-plant-inner">
+        <div class="cat-leaf" style="width:38px;height:88px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:58px;left:-12px;--r:-5deg;border-radius:50%;--dur:5.5s;"></div>
+        <div class="cat-leaf" style="width:32px;height:75px;background:linear-gradient(135deg,#6B9E78,#8FBC8F);bottom:55px;left:10px;--r:8deg;border-radius:50%;--dur:4.5s;animation-delay:0.5s;"></div>
+        <div class="cat-pot sage-pot"></div>
+      </div></div>
+      <div class="cat-info"><div class="cat-name">Cacti</div><div class="cat-count">19 plants</div><span class="cat-arrow">→</span></div>
     </div>
   </div>
 </section>
@@ -1032,20 +1349,23 @@ footer {
 <section class="featured">
   <div class="featured-header">
     <div>
-      <div class="section-label">Best sellers</div>
-      <div class="section-title">Most loved plants</div>
+      <div class="section-label reveal">Best sellers</div>
+      <div class="section-title reveal">Most loved plants</div>
     </div>
-    <a href="#" class="btn-secondary hoverable" style="font-size:0.65rem;">All products</a>
+    <a href="shop.html" class="btn-secondary hoverable" style="font-size:0.65rem;">All products</a>
   </div>
   <div class="products-grid">
     <div class="product-card hoverable">
       <div class="product-img">
+        <div class="product-img-bg"></div>
         <span class="product-badge badge-popular">Popular</span>
+        <button class="product-wishlist hoverable">♡</button>
+        <button class="product-quick hoverable">Quick view</button>
         <div class="product-plant-display">
-          <div class="p-leaf" style="width:80px;height:55px;background:#4A7C59;bottom:50px;left:-45px;--r:-25deg;"></div>
-          <div class="p-leaf" style="width:70px;height:45px;background:#6B9E78;bottom:60px;left:10px;--r:20deg;animation-delay:0.5s;"></div>
-          <div class="p-leaf" style="width:85px;height:55px;background:#5A8F6A;bottom:40px;left:15px;--r:30deg;animation-delay:1s;"></div>
-          <div class="p-pot" style="background:var(--terracotta);"></div>
+          <div class="p-leaf" style="width:90px;height:58px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:52px;left:-52px;--r:-25deg;--dur:4.5s;"></div>
+          <div class="p-leaf" style="width:78px;height:50px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:65px;left:12px;--r:22deg;--dur:3.8s;animation-delay:0.5s;"></div>
+          <div class="p-leaf" style="width:95px;height:60px;background:linear-gradient(135deg,#4A7C59,#5A8F6A);bottom:42px;left:18px;--r:32deg;--dur:5s;animation-delay:1s;"></div>
+          <div class="p-pot" style="background:linear-gradient(135deg,#C4725A,#D4845E);"></div>
         </div>
       </div>
       <div class="product-info">
@@ -1060,12 +1380,15 @@ footer {
     </div>
     <div class="product-card hoverable">
       <div class="product-img">
+        <div class="product-img-bg"></div>
         <span class="product-badge badge-new">New</span>
+        <button class="product-wishlist hoverable">♡</button>
+        <button class="product-quick hoverable">Quick view</button>
         <div class="product-plant-display">
-          <div class="p-leaf" style="width:50px;height:80px;background:#3D6B4A;bottom:50px;left:-15px;--r:-5deg;border-radius:45% 45% 5% 5%;"></div>
-          <div class="p-leaf" style="width:45px;height:70px;background:#4A7C59;bottom:48px;left:8px;--r:8deg;border-radius:45% 45% 5% 5%;animation-delay:0.6s;"></div>
-          <div class="p-leaf" style="width:40px;height:65px;background:#6B9E78;bottom:45px;left:-25px;--r:-12deg;border-radius:45% 45% 5% 5%;animation-delay:1.1s;"></div>
-          <div class="p-pot" style="background:#E8E4DE;"></div>
+          <div class="p-leaf" style="width:52px;height:85px;background:linear-gradient(135deg,#2F5B3D,#3D6B4A);bottom:52px;left:-16px;--r:-5deg;border-radius:45% 45% 5% 5%;--dur:4s;"></div>
+          <div class="p-leaf" style="width:46px;height:72px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:48px;left:8px;--r:8deg;border-radius:45% 45% 5% 5%;--dur:4.5s;animation-delay:0.6s;"></div>
+          <div class="p-leaf" style="width:40px;height:65px;background:linear-gradient(135deg,#4A7C59,#6B9E78);bottom:45px;left:-26px;--r:-12deg;border-radius:45% 45% 5% 5%;--dur:3.8s;animation-delay:1.1s;"></div>
+          <div class="p-pot" style="background:linear-gradient(135deg,#E8E4DE,#F0EDE8);"></div>
         </div>
       </div>
       <div class="product-info">
@@ -1080,13 +1403,16 @@ footer {
     </div>
     <div class="product-card hoverable">
       <div class="product-img">
+        <div class="product-img-bg"></div>
         <span class="product-badge badge-sale">-20%</span>
+        <button class="product-wishlist hoverable">♡</button>
+        <button class="product-quick hoverable">Quick view</button>
         <div class="product-plant-display">
-          <div class="p-leaf" style="width:60px;height:35px;background:#6B9E78;bottom:50px;left:-35px;--r:-20deg;"></div>
-          <div class="p-leaf" style="width:55px;height:30px;background:#8FBC8F;bottom:55px;left:10px;--r:18deg;animation-delay:0.4s;"></div>
-          <div class="p-leaf" style="width:50px;height:28px;background:#A8C5A0;bottom:62px;left:-10px;--r:-10deg;animation-delay:0.9s;"></div>
-          <div class="p-leaf" style="width:45px;height:25px;background:#4A7C59;bottom:48px;left:20px;--r:28deg;animation-delay:1.3s;"></div>
-          <div class="p-pot" style="background:#3A3A3A;"></div>
+          <div class="p-leaf" style="width:65px;height:38px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:52px;left:-38px;--r:-22deg;--dur:4s;"></div>
+          <div class="p-leaf" style="width:58px;height:32px;background:linear-gradient(135deg,#6B9E78,#8FBC8F);bottom:60px;left:10px;--r:18deg;--dur:3.5s;animation-delay:0.4s;"></div>
+          <div class="p-leaf" style="width:52px;height:30px;background:linear-gradient(135deg,#8FBC8F,#A8C5A0);bottom:68px;left:-10px;--r:-12deg;--dur:4.5s;animation-delay:0.9s;"></div>
+          <div class="p-leaf" style="width:48px;height:28px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:48px;left:22px;--r:30deg;--dur:5s;animation-delay:1.3s;"></div>
+          <div class="p-pot" style="background:linear-gradient(135deg,#3A3A3A,#4A4A4A);"></div>
         </div>
       </div>
       <div class="product-info">
@@ -1104,47 +1430,50 @@ footer {
 
 <!-- Stats -->
 <div class="stats">
-  <div class="stat"><div class="stat-num" data-count="12000">0</div><div class="stat-label">Plants delivered</div></div>
-  <div class="stat"><div class="stat-num" data-count="98">0</div><div class="stat-label">Survival rate %</div></div>
-  <div class="stat"><div class="stat-num" data-count="150">0</div><div class="stat-label">Species available</div></div>
-  <div class="stat"><div class="stat-num" data-count="4800">0</div><div class="stat-label">Happy customers</div></div>
+  <div class="stat"><div class="stat-icon">🌱</div><div class="stat-num" data-count="12000">0</div><div class="stat-label">Plants delivered</div></div>
+  <div class="stat"><div class="stat-icon">💚</div><div class="stat-num" data-count="98">0</div><div class="stat-label">Survival rate %</div></div>
+  <div class="stat"><div class="stat-icon">🌿</div><div class="stat-num" data-count="150">0</div><div class="stat-label">Species available</div></div>
+  <div class="stat"><div class="stat-icon">⭐</div><div class="stat-num" data-count="4800">0</div><div class="stat-label">Happy customers</div></div>
 </div>
 
-<!-- How it works -->
+<!-- How -->
 <section class="how">
   <div class="how-header">
-    <div class="section-label">How it works</div>
-    <div class="section-title">From our greenhouse to your home</div>
-    <p class="section-desc">Every plant is hand-picked, carefully packaged with eco-friendly materials, and shipped with a personalized care card.</p>
+    <div class="section-label reveal">How it works</div>
+    <div class="section-title reveal">From our greenhouse to your home</div>
+    <p class="section-desc reveal">Every plant is hand-picked, carefully packaged with eco-friendly materials, and shipped with a personalized care card.</p>
   </div>
   <div class="how-steps">
-    <div class="how-step hoverable"><div class="step-num">1</div><div class="step-title">Choose your plant</div><div class="step-desc">Browse our curated collection filtered by light, space, and care level.</div></div>
-    <div class="how-step hoverable"><div class="step-num">2</div><div class="step-title">We hand-pick it</div><div class="step-desc">Our team selects the healthiest specimen from our partner greenhouses.</div></div>
-    <div class="how-step hoverable"><div class="step-num">3</div><div class="step-title">Eco packaging</div><div class="step-desc">Wrapped in recycled materials with custom support to prevent damage.</div></div>
-    <div class="how-step hoverable"><div class="step-num">4</div><div class="step-title">Delivered with care</div><div class="step-desc">Arrives at your door with a care guide and 30-day health guarantee.</div></div>
+    <div class="how-step hoverable" style="transition-delay:0s"><div class="step-num">1</div><div class="step-title">Choose your plant</div><div class="step-desc">Browse our curated collection filtered by light, space, and care level.</div></div>
+    <div class="how-step hoverable" style="transition-delay:0.1s"><div class="step-num">2</div><div class="step-title">We hand-pick it</div><div class="step-desc">Our team selects the healthiest specimen from our partner greenhouses.</div></div>
+    <div class="how-step hoverable" style="transition-delay:0.2s"><div class="step-num">3</div><div class="step-title">Eco packaging</div><div class="step-desc">Wrapped in recycled materials with custom support to prevent damage.</div></div>
+    <div class="how-step hoverable" style="transition-delay:0.3s"><div class="step-num">4</div><div class="step-title">Delivered with care</div><div class="step-desc">Arrives at your door with a care guide and 30-day health guarantee.</div></div>
   </div>
 </section>
 
 <!-- Testimonials -->
 <section class="testimonials">
   <div class="testimonials-header">
-    <div class="section-label">Reviews</div>
-    <div class="section-title">What plant parents say</div>
+    <div class="section-label reveal">Reviews</div>
+    <div class="section-title reveal">What plant parents say</div>
   </div>
   <div class="testimonials-grid">
     <div class="testimonial hoverable">
+      <div class="test-quote">"</div>
       <div class="test-stars">★★★★★</div>
-      <p class="test-text">"My Monstera arrived in perfect condition. The care card was a great touch — it's thriving three months later!"</p>
+      <p class="test-text">My Monstera arrived in perfect condition. The care card was a great touch — it's thriving three months later!</p>
       <div class="test-author"><div class="test-avatar">LS</div><div><div class="test-name">Laura S.</div><div class="test-loc">Madrid</div></div></div>
     </div>
     <div class="testimonial hoverable">
+      <div class="test-quote">"</div>
       <div class="test-stars">★★★★★</div>
-      <p class="test-text">"Finally an online plant shop that packages properly. Zero damage, beautiful pot, and the plant was even bigger than expected."</p>
+      <p class="test-text">Finally an online plant shop that packages properly. Zero damage, beautiful pot, and the plant was even bigger than expected.</p>
       <div class="test-author"><div class="test-avatar">MR</div><div><div class="test-name">Marco R.</div><div class="test-loc">Barcelona</div></div></div>
     </div>
     <div class="testimonial hoverable">
+      <div class="test-quote">"</div>
       <div class="test-stars">★★★★★</div>
-      <p class="test-text">"I've ordered five times now. The quality is always consistent, and customer service helped me save a plant I was overwatering."</p>
+      <p class="test-text">I've ordered five times now. The quality is always consistent, and customer service helped me save a plant I was overwatering.</p>
       <div class="test-author"><div class="test-avatar">AC</div><div><div class="test-name">Ana C.</div><div class="test-loc">Valencia</div></div></div>
     </div>
   </div>
@@ -1153,10 +1482,12 @@ footer {
 <!-- Newsletter -->
 <section class="newsletter">
   <div class="newsletter-bg"></div>
+  <div class="newsletter-leaf"></div>
+  <div class="newsletter-leaf"></div>
   <div class="newsletter-content">
-    <div class="section-label">Newsletter</div>
-    <div class="section-title">Get 10% off your first order</div>
-    <p class="section-desc" style="margin:0 auto 2rem;">Join our plant community for care tips, new arrivals, and exclusive discounts.</p>
+    <div class="section-label reveal">Newsletter</div>
+    <div class="section-title reveal">Get 10% off your first order</div>
+    <p class="section-desc reveal" style="margin:0 auto 2rem;">Join our plant community for care tips, new arrivals, and exclusive discounts.</p>
     <div class="newsletter-form">
       <input type="email" class="newsletter-input hoverable" placeholder="your@email.com">
       <button class="newsletter-btn hoverable">Subscribe</button>
@@ -1203,21 +1534,40 @@ footer {
 <script>
 // Loader
 window.addEventListener('load', () => {
-  setTimeout(() => document.querySelector('.loader').classList.add('hidden'), 1200);
+  setTimeout(() => document.querySelector('.loader').classList.add('hidden'), 1800);
 });
 
-// Cursor
+// Cursor + trails
 const cursor = document.querySelector('.cursor');
 const cursorDot = document.querySelector('.cursor-dot');
 let mx=0,my=0,cx=0,cy=0,dx=0,dy=0;
+const trails = [];
+for (let i = 0; i < 5; i++) {
+  const t = document.createElement('div');
+  t.className = 'cursor-trail';
+  document.body.appendChild(t);
+  trails.push({ el: t, x: 0, y: 0 });
+}
 document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
+document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
 (function loop(){
-  cx += (mx-cx)*0.1;
-  cy += (my-cy)*0.1;
-  dx += (mx-dx)*0.28;
-  dy += (my-dy)*0.28;
+  cx += (mx-cx)*0.08;
+  cy += (my-cy)*0.08;
+  dx += (mx-dx)*0.25;
+  dy += (my-dy)*0.25;
   cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
   cursorDot.style.left=dx+'px'; cursorDot.style.top=dy+'px';
+  let prevX = cx, prevY = cy;
+  trails.forEach((t, i) => {
+    t.x += (prevX - t.x) * (0.15 - i * 0.02);
+    t.y += (prevY - t.y) * (0.15 - i * 0.02);
+    t.el.style.left = t.x + 'px';
+    t.el.style.top = t.y + 'px';
+    t.el.style.opacity = (0.15 - i * 0.03);
+    t.el.style.width = t.el.style.height = (3 - i * 0.4) + 'px';
+    prevX = t.x; prevY = t.y;
+  });
   requestAnimationFrame(loop);
 })();
 document.querySelectorAll('.hoverable, a, button, input').forEach(el => {
@@ -1228,64 +1578,58 @@ document.querySelectorAll('.hoverable, a, button, input').forEach(el => {
 // Scroll progress
 window.addEventListener('scroll', () => {
   const h = document.documentElement.scrollHeight - window.innerHeight;
-  const p = (window.scrollY / h) * 100;
-  document.querySelector('.scroll-progress').style.width = p + '%';
+  document.querySelector('.scroll-progress').style.width = (window.scrollY/h)*100+'%';
 });
 
 // Hero word reveal
 const words = document.querySelectorAll('.hero-title .word');
 words.forEach((w, i) => {
   setTimeout(() => {
-    w.style.transition = 'all 0.8s cubic-bezier(0.16,1,0.3,1)';
+    w.style.transition = 'all 0.9s cubic-bezier(0.16,1,0.3,1)';
     w.style.opacity = '1';
     w.style.transform = 'translateY(0) rotateX(0)';
-  }, 1500 + i * 120);
+  }, 2000 + i * 140);
 });
 
 // Floating leaves
 function createLeaves() {
-  for (let i = 0; i < 20; i++) {
-    const leaf = document.createElement('div');
-    leaf.className = 'floating-leaf';
-    leaf.style.left = Math.random() * 100 + '%';
-    leaf.style.top = Math.random() * 100 + '%';
-    const size = 8 + Math.random() * 16;
-    leaf.style.width = size + 'px';
-    leaf.style.height = size * 1.5 + 'px';
-    const dur = 15 + Math.random() * 25;
-    const del = Math.random() * 10;
-    leaf.style.animation = `leafFloat ${dur}s ease-in-out ${del}s infinite`;
-    document.body.appendChild(leaf);
-  }
   const style = document.createElement('style');
   style.textContent = `
     @keyframes leafFloat {
-      0%,100% { opacity:0; transform: translateY(0) rotate(0deg); }
-      10% { opacity:0.15; }
-      90% { opacity:0.15; }
-      50% { transform: translateY(-100px) rotate(180deg) translateX(30px); }
+      0% { opacity:0; transform: translateY(100vh) rotate(0deg) scale(0.5); }
+      10% { opacity:0.12; }
+      90% { opacity:0.12; }
+      100% { opacity:0; transform: translateY(-100px) rotate(360deg) scale(1) translateX(50px); }
     }
   `;
   document.head.appendChild(style);
+  for (let i = 0; i < 25; i++) {
+    const leaf = document.createElement('div');
+    leaf.className = 'floating-leaf';
+    leaf.style.left = Math.random() * 100 + '%';
+    const size = 6 + Math.random() * 18;
+    leaf.style.width = size + 'px';
+    leaf.style.height = size * 1.5 + 'px';
+    const dur = 12 + Math.random() * 20;
+    const del = Math.random() * 15;
+    leaf.style.animation = `leafFloat ${dur}s ease-in-out ${del}s infinite`;
+    document.body.appendChild(leaf);
+  }
 }
 createLeaves();
 
-// Intersection Observer for scroll reveals
-const obs = new IntersectionObserver((entries) => {
+// IntersectionObserver
+const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       e.target.classList.add('visible');
-      obs.unobserve(e.target);
+      revealObs.unobserve(e.target);
     }
   });
 }, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .section-label, .section-title, .section-desc, .cat-card, .product-card, .stat, .how-step, .testimonial').forEach(el => revealObs.observe(el));
 
-document.querySelectorAll('.cat-card, .product-card, .stat, .how-step, .testimonial').forEach((el, i) => {
-  el.style.transitionDelay = (i % 4) * 0.1 + 's';
-  obs.observe(el);
-});
-
-// Counter animation
+// Counter
 function animateCounters() {
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
@@ -1295,52 +1639,71 @@ function animateCounters() {
       const p = Math.min((now - start) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
       const val = Math.round(eased * target);
-      if (target >= 1000) {
-        el.textContent = val.toLocaleString()+'+';
-      } else {
-        el.textContent = val + (el.parentElement.querySelector('.stat-label')?.textContent.includes('%') ? '%' : '+');
-      }
+      const label = el.closest('.stat')?.querySelector('.stat-label')?.textContent || '';
+      if (target >= 1000) el.textContent = val.toLocaleString() + '+';
+      else if (label.includes('%')) el.textContent = val + '%';
+      else el.textContent = val + '+';
       if (p < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
   });
 }
-
 const statObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      animateCounters();
-      statObs.unobserve(e.target);
-    }
-  });
+  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statObs.unobserve(e.target); } });
 }, { threshold: 0.3 });
-const statsSection = document.querySelector('.stats');
-if (statsSection) statObs.observe(statsSection);
+statObs.observe(document.querySelector('.stats'));
 
-// Product card glow follow
+// Product card 3D tilt
 document.querySelectorAll('.product-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
     const x = ((e.clientX - r.left) / r.width - 0.5) * 8;
     const y = ((e.clientY - r.top) / r.height - 0.5) * -8;
-    card.style.transform = `translateY(-6px) perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
+    card.style.transform = `translateY(-8px) perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
 
 // Category card tilt
 document.querySelectorAll('.cat-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width - 0.5) * 10;
-    const y = ((e.clientY - r.top) / r.height - 0.5) * -10;
-    card.style.transform = `translateY(-8px) perspective(600px) rotateY(${x}deg) rotateX(${y}deg)`;
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * -12;
+    card.style.transform = `translateY(-10px) scale(1.02) perspective(600px) rotateY(${x}deg) rotateX(${y}deg)`;
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
+
+// Wishlist toggle
+document.querySelectorAll('.product-wishlist').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const liked = btn.textContent.trim() === '♥';
+    btn.textContent = liked ? '♡' : '♥';
+    btn.style.color = liked ? '' : 'var(--terracotta)';
+    btn.style.transform = 'scale(1.3)';
+    setTimeout(() => btn.style.transform = '', 200);
   });
+});
+
+// Parallax on hero bg shapes
+window.addEventListener('scroll', () => {
+  const s = window.scrollY;
+  document.querySelectorAll('.hero-bg-shape').forEach((shape, i) => {
+    shape.style.transform += ''; // handled by CSS animation
+  });
+});
+
+// Nav background on scroll
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 100) {
+    nav.style.boxShadow = '0 4px 30px rgba(0,0,0,0.04)';
+  } else {
+    nav.style.boxShadow = 'none';
+  }
 });
 </script>
 
