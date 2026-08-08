@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#F5F0E8;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.label{position:absolute;top:60px;left:80px;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;}
+.mockup{width:1400px;height:850px;background:#FDFCF9;border-radius:16px;border:1px solid rgba(26,46,26,0.06);overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.08);}
+.mock-nav{height:56px;border-bottom:1px solid rgba(26,46,26,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 30px;}
+.mock-logo{font-family:Georgia,serif;font-size:16px;letter-spacing:6px;color:#4A7C59;}
+.mock-links{display:flex;gap:24px;font-size:11px;color:rgba(26,46,26,0.35);}
+.mock-cart{padding:5px 14px;border:1px solid #4A7C59;border-radius:50px;font-size:10px;color:#4A7C59;letter-spacing:1px;}
+.mock-hero{display:flex;height:calc(100% - 56px);position:relative;}
+.mock-left{width:55%;padding:80px 60px;display:flex;flex-direction:column;justify-content:center;}
+.mock-badge{display:inline-block;padding:4px 14px;border:1px solid rgba(26,46,26,0.08);border-radius:30px;font-size:8px;letter-spacing:2px;color:rgba(26,46,26,0.35);margin-bottom:24px;width:fit-content;}
+.mock-badge .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#4A7C59;margin-right:5px;vertical-align:middle;}
+.mock-title{font-family:Georgia,serif;font-size:68px;font-weight:400;color:#1A2E1A;letter-spacing:-3px;line-height:1.05;margin-bottom:16px;}
+.mock-title span{color:#4A7C59;}
+.mock-desc{font-size:13px;color:rgba(26,46,26,0.4);line-height:1.7;max-width:400px;margin-bottom:24px;}
+.mock-btns{display:flex;gap:10px;}
+.mock-btn-p{padding:10px 24px;background:#4A7C59;color:white;border-radius:50px;font-size:10px;letter-spacing:2px;text-transform:uppercase;}
+.mock-btn-s{padding:10px 24px;border:1px solid rgba(26,46,26,0.1);border-radius:50px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.5);}
+.mock-right{width:45%;background:#F5F0E8;display:flex;align-items:center;justify-content:center;position:relative;}
+.mock-plant{position:relative;display:flex;flex-direction:column;align-items:center;}
+.mp-stem{width:3px;height:220px;background:linear-gradient(to top,#3D6B4A,#6B9E78);}
+.mp-leaf{position:absolute;border-radius:50% 0 50% 0;}
+.mp1{width:120px;height:75px;background:#4A7C59;bottom:150px;left:-85px;transform:rotate(-25deg);opacity:0.9;}
+.mp2{width:100px;height:65px;background:#6B9E78;bottom:190px;left:20px;transform:rotate(22deg);}
+.mp3{width:115px;height:72px;background:#5A8F6A;bottom:110px;left:15px;transform:rotate(30deg);opacity:0.85;}
+.mp4{width:90px;height:55px;background:#8FBC8F;bottom:230px;left:-60px;transform:rotate(-35deg);opacity:0.7;}
+.mp-pot{width:80px;height:70px;background:#C4725A;border-radius:6px 6px 18px 18px;position:relative;}
+.mp-pot::before{content:'';position:absolute;top:-7px;left:-5px;width:calc(100% + 10px);height:14px;background:#C4725A;border-radius:4px;opacity:0.9;}
+.mock-tag{position:absolute;top:80px;right:40px;padding:12px 18px;background:white;border:1px solid rgba(26,46,26,0.06);border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.04);transform:rotate(3deg);}
+.mock-tag-name{font-family:Georgia,serif;font-size:12px;margin-bottom:2px;color:#1A2E1A;}
+.mock-tag-latin{font-size:9px;color:rgba(26,46,26,0.35);font-style:italic;margin-bottom:5px;}
+.mock-tag-price{font-size:14px;font-weight:600;color:#4A7C59;}
+.tag{position:absolute;bottom:50px;right:80px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,46,26,0.2);}
+</style>
+</head>
+<body>
+<div class="label">Landing Page</div>
+<div class="mockup">
+  <div class="mock-nav"><span class="mock-logo">FLŌRA</span><div class="mock-links"><span>Shop</span><span>Collections</span><span>Care Guide</span><span>About</span></div><span class="mock-cart">Cart (2)</span></div>
+  <div class="mock-hero">
+    <div class="mock-left">
+      <div class="mock-badge"><span class="dot"></span>Free shipping over €50</div>
+      <div class="mock-title">Bring <span>nature</span><br>into your home</div>
+      <div class="mock-desc">Curated plants for every space and skill level. Delivered to your door with care instructions.</div>
+      <div class="mock-btns"><span class="mock-btn-p">Shop collection</span><span class="mock-btn-s">Care guide</span></div>
+    </div>
+    <div class="mock-right">
+      <div class="mock-plant">
+        <div class="mp-leaf mp1"></div><div class="mp-leaf mp2"></div><div class="mp-leaf mp3"></div><div class="mp-leaf mp4"></div>
+        <div class="mp-stem"></div><div class="mp-pot"></div>
+      </div>
+      <div class="mock-tag"><div class="mock-tag-name">Monstera Deliciosa</div><div class="mock-tag-latin">Swiss Cheese Plant</div><div class="mock-tag-price">€45</div></div>
+    </div>
+  </div>
+</div>
+<div class="tag">Desktop &bull; 1440px</div>
+</body>
+</html>

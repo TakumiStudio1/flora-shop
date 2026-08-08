@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#F5F0E8;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.label{position:absolute;top:60px;left:80px;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;}
+.mockup{width:1500px;height:880px;background:#FDFCF9;border-radius:16px;border:1px solid rgba(26,46,26,0.06);overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.08);display:flex;flex-direction:column;}
+.mk-nav{height:50px;border-bottom:1px solid rgba(26,46,26,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 28px;}
+.mk-logo{font-family:Georgia,serif;font-size:14px;letter-spacing:6px;color:#4A7C59;}
+.mk-links{display:flex;gap:20px;font-size:10px;color:rgba(26,46,26,0.35);}
+.mk-links .act{color:#4A7C59;}
+.mk-cart{padding:4px 12px;border:1px solid #4A7C59;border-radius:50px;font-size:9px;color:#4A7C59;}
+.mk-header{text-align:center;padding:30px 0 20px;}
+.mk-header .sec-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:#4A7C59;margin-bottom:6px;}
+.mk-header h2{font-family:Georgia,serif;font-size:38px;font-weight:400;color:#1A2E1A;letter-spacing:-1px;}
+.mk-header .count{font-family:'SF Mono',monospace;font-size:9px;color:rgba(26,46,26,0.25);margin-top:6px;}
+.mk-filters{display:flex;justify-content:center;gap:8px;padding:0 28px 20px;}
+.mk-pill{padding:5px 16px;border:1px solid rgba(26,46,26,0.08);border-radius:50px;font-size:9px;color:rgba(26,46,26,0.4);}
+.mk-pill.act{background:#4A7C59;color:white;border-color:#4A7C59;}
+.mk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:0 28px;flex:1;overflow:hidden;}
+.mk-card{background:white;border-radius:14px;border:1px solid rgba(26,46,26,0.06);overflow:hidden;}
+.mk-img{height:180px;background:#FAFAF5;display:flex;align-items:center;justify-content:center;position:relative;}
+.mk-badge{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:50px;font-size:7px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
+.b-pop{background:#1A2E1A;color:white;}
+.b-new{background:#4A7C59;color:white;}
+.b-sale{background:#C4725A;color:white;}
+.mk-heart{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:white;border:1px solid rgba(26,46,26,0.06);display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(26,46,26,0.2);}
+.mk-plant{position:relative;display:flex;flex-direction:column;align-items:center;}
+.mk-pot{width:32px;height:28px;border-radius:3px 3px 10px 10px;position:relative;}
+.mk-pot::before{content:'';position:absolute;top:-4px;left:-2px;width:calc(100% + 4px);height:7px;border-radius:2px;background:inherit;opacity:0.85;}
+.mk-leaf{position:absolute;border-radius:50% 0 50% 0;}
+.mk-info{padding:12px;}
+.mk-name{font-family:Georgia,serif;font-size:12px;color:#1A2E1A;margin-bottom:2px;}
+.mk-latin{font-size:8px;color:rgba(26,46,26,0.35);font-style:italic;margin-bottom:6px;}
+.mk-bottom{display:flex;justify-content:space-between;align-items:center;}
+.mk-price{font-size:13px;font-weight:600;color:#4A7C59;}
+.mk-price .old{text-decoration:line-through;color:rgba(26,46,26,0.25);font-weight:300;font-size:10px;margin-right:3px;}
+.mk-add{width:24px;height:24px;border-radius:50%;border:1px solid rgba(26,46,26,0.08);display:flex;align-items:center;justify-content:center;font-size:12px;color:rgba(26,46,26,0.3);}
+.mk-care{display:flex;gap:8px;margin-top:5px;font-size:7px;color:rgba(26,46,26,0.25);}
+.tag{position:absolute;bottom:50px;right:80px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,46,26,0.2);}
+</style>
+</head>
+<body>
+<div class="label">Shop Page</div>
+<div class="mockup">
+  <div class="mk-nav"><span class="mk-logo">FLŌRA</span><div class="mk-links"><span class="act">Shop</span><span>Collections</span><span>Care Guide</span><span>About</span></div><span class="mk-cart">Cart (2)</span></div>
+  <div class="mk-header"><div class="sec-label">Collection</div><h2>All plants</h2><div class="count">Showing 8 of 150</div></div>
+  <div class="mk-filters">
+    <span class="mk-pill act">All</span><span class="mk-pill">Indoor</span><span class="mk-pill">Low light</span><span class="mk-pill">Pet friendly</span><span class="mk-pill">Easy care</span><span class="mk-pill">Tropical</span>
+  </div>
+  <div class="mk-grid">
+    <div class="mk-card"><div class="mk-img"><span class="mk-badge b-pop">Popular</span><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:55px;height:35px;background:#4A7C59;bottom:32px;left:-30px;transform:rotate(-25deg);"></div><div class="mk-leaf" style="width:45px;height:28px;background:#6B9E78;bottom:40px;left:8px;transform:rotate(20deg);"></div><div class="mk-pot" style="background:#C4725A;"></div></div></div><div class="mk-info"><div class="mk-name">Monstera Deliciosa</div><div class="mk-latin">Swiss Cheese Plant</div><div class="mk-bottom"><span class="mk-price">€45</span><span class="mk-add">+</span></div><div class="mk-care">☀ Medium · 💧 Weekly</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-badge b-new">New</span><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:30px;height:50px;background:#3D6B4A;bottom:32px;left:-8px;transform:rotate(-5deg);border-radius:45% 45% 5% 5%;"></div><div class="mk-leaf" style="width:25px;height:42px;background:#4A7C59;bottom:30px;left:8px;transform:rotate(8deg);border-radius:45% 45% 5% 5%;"></div><div class="mk-pot" style="background:#E8E4DE;"></div></div></div><div class="mk-info"><div class="mk-name">Snake Plant</div><div class="mk-latin">Sansevieria Trifasciata</div><div class="mk-bottom"><span class="mk-price">€32</span><span class="mk-add">+</span></div><div class="mk-care">☀ Low · 💧 Bi-weekly</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-badge b-sale">-20%</span><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:40px;height:22px;background:#6B9E78;bottom:35px;left:-22px;transform:rotate(-18deg);"></div><div class="mk-leaf" style="width:35px;height:20px;background:#8FBC8F;bottom:40px;left:6px;transform:rotate(15deg);"></div><div class="mk-pot" style="background:#3A3A3A;"></div></div></div><div class="mk-info"><div class="mk-name">Pothos Golden</div><div class="mk-latin">Epipremnum Aureum</div><div class="mk-bottom"><span class="mk-price"><span class="old">€30</span>€24</span><span class="mk-add">+</span></div><div class="mk-care">☀ Low · 💧 Weekly</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:50px;height:32px;background:#4A7C59;bottom:35px;left:-28px;transform:rotate(-22deg);"></div><div class="mk-leaf" style="width:42px;height:26px;background:#3D6B4A;bottom:42px;left:5px;transform:rotate(18deg);"></div><div class="mk-pot" style="background:#C4725A;"></div></div></div><div class="mk-info"><div class="mk-name">Fiddle Leaf Fig</div><div class="mk-latin">Ficus Lyrata</div><div class="mk-bottom"><span class="mk-price">€55</span><span class="mk-add">+</span></div><div class="mk-care">☀ Bright · 💧 Weekly</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:28px;height:45px;background:#6B9E78;bottom:32px;left:-5px;border-radius:40% 40% 0 0;"></div><div class="mk-leaf" style="width:22px;height:38px;background:#8FBC8F;bottom:30px;left:10px;border-radius:40% 40% 0 0;"></div><div class="mk-pot" style="background:#E8E4DE;"></div></div></div><div class="mk-info"><div class="mk-name">Aloe Vera</div><div class="mk-latin">Aloe Barbadensis</div><div class="mk-bottom"><span class="mk-price">€18</span><span class="mk-add">+</span></div><div class="mk-care">☀ Bright · 💧 Monthly</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-badge b-new">New</span><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:42px;height:28px;background:#3D6B4A;bottom:35px;left:-24px;transform:rotate(-20deg);"></div><div class="mk-leaf" style="width:38px;height:24px;background:#4A7C59;bottom:42px;left:4px;transform:rotate(15deg);"></div><div class="mk-pot" style="background:#3A3A3A;"></div></div></div><div class="mk-info"><div class="mk-name">Calathea Orbifolia</div><div class="mk-latin">Goeppertia Orbifolia</div><div class="mk-bottom"><span class="mk-price">€38</span><span class="mk-add">+</span></div><div class="mk-care">☀ Low · 💧 Twice/wk</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:18px;height:38px;background:#4A7C59;bottom:32px;left:-3px;border-radius:10px;"></div><div class="mk-leaf" style="width:15px;height:32px;background:#6B9E78;bottom:30px;left:8px;border-radius:10px;transform:rotate(12deg);"></div><div class="mk-pot" style="background:#C4725A;"></div></div></div><div class="mk-info"><div class="mk-name">ZZ Plant</div><div class="mk-latin">Zamioculcas Zamiifolia</div><div class="mk-bottom"><span class="mk-price">€28</span><span class="mk-add">+</span></div><div class="mk-care">☀ Low · 💧 Monthly</div></div></div>
+    <div class="mk-card"><div class="mk-img"><span class="mk-badge b-pop">Popular</span><span class="mk-heart">♡</span><div class="mk-plant"><div class="mk-leaf" style="width:35px;height:35px;background:#6B9E78;bottom:35px;left:-15px;border-radius:50%;transform:rotate(-10deg);"></div><div class="mk-leaf" style="width:30px;height:30px;background:#8FBC8F;bottom:40px;left:5px;border-radius:50%;transform:rotate(8deg);"></div><div class="mk-pot" style="background:#E8E4DE;"></div></div></div><div class="mk-info"><div class="mk-name">Pilea</div><div class="mk-latin">Chinese Money Plant</div><div class="mk-bottom"><span class="mk-price">€22</span><span class="mk-add">+</span></div><div class="mk-care">☀ Medium · 💧 Weekly</div></div></div>
+  </div>
+</div>
+<div class="tag">Shop Grid &bull; Desktop</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#FDFCF9;font-family:'Helvetica Neue',Arial,sans-serif;padding:80px 100px;overflow:hidden;}
+.label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;margin-bottom:16px;}
+h2{font-family:Georgia,serif;font-size:42px;font-weight:400;color:#1A2E1A;letter-spacing:-1px;margin-bottom:50px;}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:30px;}
+.anim-card{background:white;border:1px solid rgba(26,46,26,0.06);border-radius:20px;padding:30px;display:flex;flex-direction:column;align-items:center;}
+.anim-preview{width:100%;height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#FAFAF5;border-radius:12px;margin-bottom:20px;}
+.anim-title{font-family:Georgia,serif;font-size:15px;color:#1A2E1A;margin-bottom:6px;text-align:center;}
+.anim-desc{font-size:11px;color:rgba(26,46,26,0.4);text-align:center;line-height:1.5;}
+.anim-tech{margin-top:10px;font-family:'SF Mono','Menlo',monospace;font-size:9px;color:rgba(74,124,89,0.5);text-align:center;}
+/* Leaf sway */
+.sway-leaf{width:80px;height:120px;position:relative;}
+.sway-leaf-shape{position:absolute;border-radius:50% 0 50% 0;animation:swayDemo 3s ease-in-out infinite;}
+.sl1{width:70px;height:45px;background:#4A7C59;bottom:50px;left:-20px;--r:-25deg;animation-delay:0s;}
+.sl2{width:60px;height:38px;background:#6B9E78;bottom:60px;left:15px;--r:20deg;animation-delay:0.5s;}
+.sl3{width:65px;height:40px;background:#5A8F6A;bottom:40px;left:10px;--r:30deg;animation-delay:1s;}
+.sway-stem{width:3px;height:80px;background:#3D6B4A;position:absolute;bottom:0;left:50%;transform:translateX(-50%);}
+@keyframes swayDemo{0%,100%{transform:rotate(var(--r,0deg));}50%{transform:rotate(calc(var(--r,0deg) + 8deg));}}
+/* Card tilt */
+.tilt-demo{width:160px;height:120px;background:white;border:1px solid rgba(26,46,26,0.08);border-radius:14px;padding:14px;animation:tiltDemo 4s ease-in-out infinite;box-shadow:0 8px 30px rgba(0,0,0,0.04);}
+@keyframes tiltDemo{0%,100%{transform:perspective(600px) rotateY(0) rotateX(0);}25%{transform:perspective(600px) rotateY(8deg) rotateX(-4deg);}75%{transform:perspective(600px) rotateY(-8deg) rotateX(4deg);}}
+.tilt-name{font-family:Georgia,serif;font-size:11px;color:#1A2E1A;margin-bottom:2px;}
+.tilt-latin{font-size:8px;color:rgba(26,46,26,0.3);font-style:italic;margin-bottom:10px;}
+.tilt-price{font-size:14px;font-weight:600;color:#4A7C59;}
+/* Cursor */
+.cur-demo{position:relative;}
+.cur-ring{width:40px;height:40px;border:1.5px solid #4A7C59;border-radius:50%;animation:curMov 3s ease-in-out infinite;}
+.cur-dot{width:6px;height:6px;background:#4A7C59;border-radius:50%;position:absolute;top:17px;left:17px;animation:curMov 3s ease-in-out infinite 0.15s;}
+@keyframes curMov{0%,100%{transform:translate(0,0);}25%{transform:translate(50px,25px);}50%{transform:translate(100px,-8px);}75%{transform:translate(35px,-25px);}}
+/* Floating leaves */
+.float-demo{position:relative;width:200px;height:200px;}
+.float-leaf{position:absolute;border-radius:50% 0 50% 0;background:#4A7C59;animation:floatL linear infinite;}
+@keyframes floatL{0%,100%{opacity:0;transform:translateY(80px) rotate(0deg);}15%{opacity:0.2;}85%{opacity:0.2;}50%{transform:translateY(-80px) rotate(180deg) translateX(20px);}}
+/* Quick view */
+.qv-demo{width:160px;height:140px;background:white;border:1px solid rgba(26,46,26,0.08);border-radius:14px;overflow:hidden;position:relative;}
+.qv-img{height:90px;background:#FAFAF5;display:flex;align-items:center;justify-content:center;}
+.qv-btn{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);padding:5px 14px;background:#4A7C59;color:white;border-radius:50px;font-size:7px;letter-spacing:1px;text-transform:uppercase;animation:qvSlide 3s ease-in-out infinite;white-space:nowrap;}
+@keyframes qvSlide{0%,30%{bottom:-30px;opacity:0;}50%,80%{bottom:52px;opacity:1;}100%{bottom:-30px;opacity:0;}}
+.qv-info{padding:8px 12px;}
+.qv-name{font-family:Georgia,serif;font-size:10px;color:#1A2E1A;}
+.qv-price{font-size:11px;font-weight:600;color:#4A7C59;}
+/* Counter */
+.counter-demo{font-family:Georgia,serif;font-size:64px;font-weight:400;color:#4A7C59;letter-spacing:-3px;}
+</style>
+</head>
+<body>
+<div class="label">Animations</div>
+<h2>Motion design</h2>
+<div class="grid">
+  <div class="anim-card">
+    <div class="anim-preview">
+      <div class="sway-leaf">
+        <div class="sway-leaf-shape sl1"></div>
+        <div class="sway-leaf-shape sl2"></div>
+        <div class="sway-leaf-shape sl3"></div>
+        <div class="sway-stem"></div>
+      </div>
+    </div>
+    <div class="anim-title">Leaf sway</div>
+    <div class="anim-desc">CSS plants gently sway using @keyframes with custom rotation variables, creating organic movement.</div>
+    <div class="anim-tech">@keyframes + CSS custom properties</div>
+  </div>
+  <div class="anim-card">
+    <div class="anim-preview">
+      <div class="tilt-demo">
+        <div class="tilt-name">Monstera</div>
+        <div class="tilt-latin">Swiss Cheese</div>
+        <div class="tilt-price">€45</div>
+      </div>
+    </div>
+    <div class="anim-title">Card tilt</div>
+    <div class="anim-desc">Product cards tilt in 3D following the mouse with perspective transform, creating depth on hover.</div>
+    <div class="anim-tech">mousemove + perspective + rotateX/Y</div>
+  </div>
+  <div class="anim-card">
+    <div class="anim-preview">
+      <div class="cur-demo"><div class="cur-ring"></div><div class="cur-dot"></div></div>
+    </div>
+    <div class="anim-title">Custom cursor</div>
+    <div class="anim-desc">Ring follows with lerp delay, dot trails behind. Expands on hoverable elements for clear interaction feedback.</div>
+    <div class="anim-tech">requestAnimationFrame + lerp</div>
+  </div>
+  <div class="anim-card">
+    <div class="anim-preview">
+      <div class="float-demo">
+        <div class="float-leaf" style="width:10px;height:14px;left:20%;animation-duration:4s;animation-delay:0s;"></div>
+        <div class="float-leaf" style="width:8px;height:12px;left:45%;animation-duration:5s;animation-delay:0.8s;"></div>
+        <div class="float-leaf" style="width:12px;height:16px;left:70%;animation-duration:3.5s;animation-delay:1.5s;"></div>
+        <div class="float-leaf" style="width:9px;height:13px;left:35%;animation-duration:4.5s;animation-delay:2s;"></div>
+        <div class="float-leaf" style="width:11px;height:15px;left:60%;animation-duration:3.8s;animation-delay:0.4s;"></div>
+      </div>
+    </div>
+    <div class="anim-title">Floating leaves</div>
+    <div class="anim-desc">Subtle leaf shapes drift across the viewport, adding atmosphere without distraction. Random timing and size.</div>
+    <div class="anim-tech">CSS animation + random positions</div>
+  </div>
+  <div class="anim-card">
+    <div class="anim-preview">
+      <div class="qv-demo">
+        <div class="qv-img"><div style="width:20px;height:18px;background:#C4725A;border-radius:3px 3px 8px 8px;"></div></div>
+        <div class="qv-btn">Quick view</div>
+        <div class="qv-info"><div class="qv-name">Monstera</div><div class="qv-price">€45</div></div>
+      </div>
+    </div>
+    <div class="anim-title">Quick view reveal</div>
+    <div class="anim-desc">A CTA slides up from below the product image on hover, offering a shortcut to product details.</div>
+    <div class="anim-tech">CSS transition + overflow hidden</div>
+  </div>
+  <div class="anim-card">
+    <div class="anim-preview"><div class="counter-demo" id="ctr">0</div></div>
+    <div class="anim-title">Counter animation</div>
+    <div class="anim-desc">Numbers count from zero to target with cubic easing when scrolled into view. Used for stats section.</div>
+    <div class="anim-tech">rAF + cubic ease-out</div>
+  </div>
+</div>
+<script>
+let t=12000,st=performance.now();
+(function tick(now){
+  let p=Math.min((now-st)/3000,1);
+  let e=1-Math.pow(1-p,3);
+  document.getElementById('ctr').textContent=Math.round(e*t).toLocaleString()+'+';
+  if(p<1)requestAnimationFrame(tick);
+  else{st=performance.now();requestAnimationFrame(tick);}
+})(performance.now());
+</script>
+</body>
+</html>

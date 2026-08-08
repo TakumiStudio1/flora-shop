@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#FDFCF9;font-family:'Helvetica Neue',Arial,sans-serif;padding:80px 100px;overflow:hidden;}
+.label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;margin-bottom:16px;}
+h2{font-family:Georgia,serif;font-size:42px;font-weight:400;color:#1A2E1A;letter-spacing:-1px;margin-bottom:50px;}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:30px;}
+.comp{background:white;border:1px solid rgba(26,46,26,0.06);border-radius:20px;padding:28px;}
+.comp-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.2);margin-bottom:16px;}
+.btn-row{display:flex;flex-direction:column;gap:10px;}
+.btn{padding:10px 20px;border-radius:50px;font-size:12px;text-align:center;letter-spacing:1px;}
+.btn-green{background:#4A7C59;color:white;}
+.btn-outline{border:1px solid #4A7C59;color:#4A7C59;background:none;}
+.btn-ghost{border:1px solid rgba(26,46,26,0.08);color:rgba(26,46,26,0.5);background:none;}
+.btn-sm{padding:6px 14px;font-size:10px;display:inline-block;}
+.pills-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+.pill{padding:5px 14px;border-radius:20px;font-size:9px;font-weight:500;}
+.pill-active{background:#4A7C59;color:white;}
+.pill-default{border:1px solid rgba(26,46,26,0.08);color:rgba(26,46,26,0.4);}
+.card-s{background:#FAFAF5;border:1px solid rgba(26,46,26,0.06);border-radius:14px;padding:16px;margin-bottom:10px;}
+.card-s .c-label{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(26,46,26,0.25);margin-bottom:4px;}
+.card-s .c-name{font-family:Georgia,serif;font-size:14px;color:#1A2E1A;margin-bottom:2px;}
+.card-s .c-latin{font-size:9px;color:rgba(26,46,26,0.3);font-style:italic;margin-bottom:6px;}
+.card-s .c-price{font-size:16px;font-weight:600;color:#4A7C59;}
+.badge-row{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.bdg{padding:3px 10px;border-radius:20px;font-size:8px;font-weight:600;letter-spacing:0.5px;}
+.bdg-pop{background:#1A2E1A;color:white;}
+.bdg-new{background:#4A7C59;color:white;}
+.bdg-sale{background:#C4725A;color:white;}
+.bdg-low{background:#D4C5A9;color:#1A2E1A;}
+.input-s{padding:10px 16px;border:1px solid rgba(26,46,26,0.08);border-radius:50px;font-size:11px;width:100%;margin-bottom:8px;color:#1A2E1A;font-family:'Helvetica Neue',sans-serif;background:white;}
+.input-focus{border-color:#4A7C59;}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.toggle-label{font-size:11px;color:rgba(26,46,26,0.5);}
+.toggle{width:36px;height:20px;border-radius:10px;background:rgba(26,46,26,0.08);position:relative;}
+.toggle.on{background:rgba(74,124,89,0.2);}
+.toggle-dot{width:16px;height:16px;border-radius:50%;position:absolute;top:2px;left:2px;background:white;border:1px solid rgba(26,46,26,0.08);}
+.toggle.on .toggle-dot{left:18px;background:#4A7C59;border-color:#4A7C59;}
+.stars{color:#4A7C59;font-size:14px;letter-spacing:2px;margin-bottom:8px;}
+.review-text{font-size:11px;color:rgba(26,46,26,0.5);font-style:italic;line-height:1.5;margin-bottom:8px;}
+.review-author{display:flex;align-items:center;gap:8px;}
+.review-avatar{width:28px;height:28px;border-radius:50%;background:rgba(74,124,89,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#4A7C59;}
+.review-name{font-size:10px;font-weight:500;color:#1A2E1A;}
+.review-loc{font-size:8px;color:rgba(26,46,26,0.3);}
+.nav-items{display:flex;flex-direction:column;gap:4px;margin-top:12px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:11px;color:rgba(26,46,26,0.4);}
+.nav-item.act{background:rgba(74,124,89,0.08);color:#4A7C59;}
+.care-tags{display:flex;gap:14px;margin-top:12px;}
+.care-t{text-align:center;}
+.care-t-icon{width:36px;height:36px;border-radius:50%;background:#F5F0E8;display:flex;align-items:center;justify-content:center;font-size:14px;margin:0 auto 4px;}
+.care-t-text{font-size:7px;color:rgba(26,46,26,0.35);}
+</style>
+</head>
+<body>
+<div class="label">UI Components</div>
+<h2>Design system</h2>
+<div class="grid">
+  <div class="comp">
+    <div class="comp-label">Buttons</div>
+    <div class="btn-row">
+      <div class="btn btn-green">Shop collection</div>
+      <div class="btn btn-outline">Get early access</div>
+      <div class="btn btn-ghost">Care guide</div>
+      <div style="display:flex;gap:6px;"><span class="btn btn-green btn-sm">Add to cart</span><span class="btn btn-ghost btn-sm">Wishlist</span></div>
+    </div>
+    <div class="comp-label" style="margin-top:20px;">Badges</div>
+    <div class="badge-row"><span class="bdg bdg-pop">Popular</span><span class="bdg bdg-new">New</span><span class="bdg bdg-sale">-20%</span><span class="bdg bdg-low">Low stock</span></div>
+    <div class="comp-label" style="margin-top:20px;">Filter pills</div>
+    <div class="pills-row"><span class="pill pill-active">All</span><span class="pill pill-default">Indoor</span><span class="pill pill-default">Low light</span><span class="pill pill-default">Easy care</span></div>
+  </div>
+  <div class="comp">
+    <div class="comp-label">Product cards</div>
+    <div class="card-s"><div class="c-label">Best seller</div><div class="c-name">Monstera Deliciosa</div><div class="c-latin">Swiss Cheese Plant</div><div class="c-price">€45</div></div>
+    <div class="card-s"><div class="c-name">Snake Plant</div><div class="c-latin">Sansevieria Trifasciata</div><div class="c-price">€32</div></div>
+    <div class="comp-label" style="margin-top:16px;">Care icons</div>
+    <div class="care-tags">
+      <div class="care-t"><div class="care-t-icon">☀</div><div class="care-t-text">Light</div></div>
+      <div class="care-t"><div class="care-t-icon">💧</div><div class="care-t-text">Water</div></div>
+      <div class="care-t"><div class="care-t-icon">📏</div><div class="care-t-text">Size</div></div>
+      <div class="care-t"><div class="care-t-icon">🐾</div><div class="care-t-text">Pets</div></div>
+      <div class="care-t"><div class="care-t-icon">🌡</div><div class="care-t-text">Temp</div></div>
+    </div>
+  </div>
+  <div class="comp">
+    <div class="comp-label">Reviews</div>
+    <div class="stars">★★★★★</div>
+    <p class="review-text">"My Monstera arrived in perfect condition. The care card was a great touch!"</p>
+    <div class="review-author"><div class="review-avatar">LS</div><div><div class="review-name">Laura S.</div><div class="review-loc">Madrid</div></div></div>
+    <div style="margin-top:16px;">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Zero damage, beautiful pot. Bigger than expected."</p>
+      <div class="review-author"><div class="review-avatar">MR</div><div><div class="review-name">Marco R.</div><div class="review-loc">Barcelona</div></div></div>
+    </div>
+    <div class="comp-label" style="margin-top:20px;">Navigation</div>
+    <div class="nav-items">
+      <div class="nav-item act">Shop</div>
+      <div class="nav-item">Collections</div>
+      <div class="nav-item">Care Guide</div>
+      <div class="nav-item">About</div>
+    </div>
+  </div>
+  <div class="comp">
+    <div class="comp-label">Form elements</div>
+    <div class="input-s" style="color:rgba(26,46,26,0.25);">your@email.com</div>
+    <div class="input-s input-focus">Madrid, Spain</div>
+    <div class="comp-label" style="margin-top:12px;">Toggles</div>
+    <div class="toggle-row"><span class="toggle-label">Email notifications</span><div class="toggle on"><div class="toggle-dot"></div></div></div>
+    <div class="toggle-row"><span class="toggle-label">Care reminders</span><div class="toggle on"><div class="toggle-dot"></div></div></div>
+    <div class="toggle-row"><span class="toggle-label">Newsletter</span><div class="toggle"><div class="toggle-dot"></div></div></div>
+    <div class="comp-label" style="margin-top:16px;">Cart summary</div>
+    <div class="card-s" style="background:white;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(26,46,26,0.4);margin-bottom:4px;"><span>Subtotal</span><span>€77</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(26,46,26,0.4);margin-bottom:4px;"><span>Shipping</span><span style="color:#4A7C59;">Free</span></div>
+      <div style="border-top:1px solid rgba(26,46,26,0.06);padding-top:6px;display:flex;justify-content:space-between;font-size:13px;font-weight:500;color:#1A2E1A;"><span>Total</span><span>€77</span></div>
+    </div>
+    <div class="btn btn-green btn-sm" style="width:100%;text-align:center;">Checkout</div>
+  </div>
+</div>
+</body>
+</html>

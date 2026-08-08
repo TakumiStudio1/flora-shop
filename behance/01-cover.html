@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#FDFCF9;font-family:Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.bg-shape{position:absolute;border-radius:50%;opacity:0.4;filter:blur(80px);}
+.bg-shape:nth-child(1){width:600px;height:600px;background:rgba(74,124,89,0.12);top:-100px;right:-50px;}
+.bg-shape:nth-child(2){width:400px;height:400px;background:rgba(196,114,90,0.08);bottom:-100px;left:-50px;}
+.content{text-align:center;position:relative;z-index:1;}
+.badge{display:inline-block;padding:6px 20px;border:1px solid rgba(26,46,26,0.1);border-radius:50px;font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,46,26,0.4);margin-bottom:40px;}
+h1{font-size:140px;font-weight:400;letter-spacing:12px;color:#4A7C59;line-height:1;margin-bottom:20px;}
+.sub{font-family:'Helvetica Neue',sans-serif;font-size:22px;font-weight:300;color:rgba(26,46,26,0.4);letter-spacing:2px;}
+.leaf{position:absolute;border-radius:50% 0 50% 0;background:#4A7C59;opacity:0.08;}
+.leaf:nth-child(3){width:200px;height:130px;top:100px;left:150px;transform:rotate(-25deg);}
+.leaf:nth-child(4){width:160px;height:100px;bottom:120px;right:180px;transform:rotate(20deg);}
+.leaf:nth-child(5){width:120px;height:80px;top:200px;right:250px;transform:rotate(35deg);}
+.tag{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-family:'Helvetica Neue',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(26,46,26,0.2);}
+</style>
+</head>
+<body>
+<div class="bg-shape"></div>
+<div class="bg-shape"></div>
+<div class="leaf"></div>
+<div class="leaf"></div>
+<div class="leaf"></div>
+<div class="content">
+  <div class="badge">Portfolio Project</div>
+  <h1>FLŌRA</h1>
+  <p class="sub">Premium Plant Shop</p>
+</div>
+<div class="tag">E-Commerce &bull; Brand Identity &bull; Web Design</div>
+</body>
+</html>

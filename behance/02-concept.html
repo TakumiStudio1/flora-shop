@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#FDFCF9;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;overflow:hidden;}
+.left{width:50%;padding:120px 100px;display:flex;flex-direction:column;justify-content:center;}
+.label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;margin-bottom:20px;}
+h2{font-family:Georgia,serif;font-size:52px;font-weight:400;color:#1A2E1A;letter-spacing:-2px;line-height:1.1;margin-bottom:30px;}
+h2 span{color:#4A7C59;}
+.desc{font-size:17px;font-weight:300;color:rgba(26,46,26,0.5);line-height:1.8;max-width:480px;}
+.right{width:50%;display:flex;align-items:center;justify-content:center;position:relative;background:#F5F0E8;}
+.plant-big{position:relative;display:flex;flex-direction:column;align-items:center;}
+.stem{width:4px;height:300px;background:linear-gradient(to top,#3D6B4A,#6B9E78);border-radius:2px;}
+.big-leaf{position:absolute;border-radius:50% 0 50% 0;}
+.bl1{width:180px;height:110px;background:#4A7C59;bottom:180px;left:-120px;transform:rotate(-25deg);opacity:0.9;}
+.bl2{width:150px;height:95px;background:#6B9E78;bottom:240px;left:30px;transform:rotate(22deg);}
+.bl3{width:170px;height:105px;background:#5A8F6A;bottom:130px;left:20px;transform:rotate(30deg);opacity:0.85;}
+.bl4{width:130px;height:80px;background:#8FBC8F;bottom:300px;left:-80px;transform:rotate(-35deg);opacity:0.7;}
+.bl5{width:140px;height:90px;background:#4A7C59;bottom:330px;left:20px;transform:rotate(15deg);opacity:0.8;}
+.pot-big{width:120px;height:100px;background:#C4725A;border-radius:8px 8px 25px 25px;position:relative;}
+.pot-big::before{content:'';position:absolute;top:-10px;left:-8px;width:calc(100% + 16px);height:20px;background:#C4725A;border-radius:6px;opacity:0.9;}
+.tags{position:absolute;bottom:80px;left:100px;display:flex;gap:12px;}
+.tag{padding:8px 20px;border:1px solid rgba(26,46,26,0.08);border-radius:50px;font-size:12px;color:rgba(26,46,26,0.35);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="left">
+  <div class="label">Concept</div>
+  <h2>Bring <span>nature</span><br>into your home</h2>
+  <p class="desc">FLORA is a premium online plant shop that curates indoor plants for every space and skill level. From low-light survivors to statement tropicals — each plant is hand-picked, eco-packaged, and delivered with personalized care instructions.</p>
+</div>
+<div class="right">
+  <div class="plant-big">
+    <div class="big-leaf bl1"></div>
+    <div class="big-leaf bl2"></div>
+    <div class="big-leaf bl3"></div>
+    <div class="big-leaf bl4"></div>
+    <div class="big-leaf bl5"></div>
+    <div class="stem"></div>
+    <div class="pot-big"></div>
+  </div>
+</div>
+<div class="tags">
+  <span class="tag">150+ Species</span>
+  <span class="tag">Eco Packaging</span>
+  <span class="tag">Care Guides</span>
+  <span class="tag">30-Day Guarantee</span>
+</div>
+</body>
+</html>

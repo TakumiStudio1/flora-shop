@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLŌRA — Shop All Plants</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --green: #4A7C59;
+  --green-light: #6B9E78;
+  --green-pale: #8FBC8F;
+  --green-dim: rgba(74,124,89,0.1);
+  --sage: #A8C5A0;
+  --olive: #3D6B4A;
+  --cream: #FAFAF5;
+  --warm: #F5F0E8;
+  --bg: #FDFCF9;
+  --text: #1A2E1A;
+  --text-dim: rgba(26,46,26,0.55);
+  --text-muted: rgba(26,46,26,0.3);
+  --border: rgba(26,46,26,0.08);
+  --border-hover: rgba(26,46,26,0.15);
+  --terracotta: #C4725A;
+  --sand: #D4C5A9;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'SF Mono', 'Menlo', monospace;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none; }
+a { color: inherit; text-decoration: none; }
+button { cursor: none; font-family: var(--sans); }
+::selection { background: var(--green); color: white; }
+
+.cursor { width: 20px; height: 20px; border: 1.5px solid var(--green); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width 0.3s, height 0.3s, background 0.3s; }
+.cursor.hover { width: 55px; height: 55px; background: rgba(74,124,89,0.06); }
+.cursor-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000; transform: translate(-50%,-50%); }
+
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; z-index: 9998; background: linear-gradient(90deg, var(--green), var(--green-light), var(--sage)); width: 0%; }
+
+/* Nav */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.25rem 3rem; display: flex; justify-content: space-between; align-items: center; background: rgba(253,252,249,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; letter-spacing: 6px; color: var(--green); }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); position: relative; transition: color 0.3s; }
+.nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--green); transition: width 0.3s; }
+.nav-links a:hover { color: var(--green); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--green); }
+.nav-links a.active::after { width: 100%; }
+.nav-cart { display: flex; align-items: center; gap: 6px; padding: 0.5rem 1.25rem; border: 1px solid var(--green); border-radius: 50px; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--green); background: none; transition: all 0.3s; }
+.nav-cart:hover { background: var(--green); color: white; }
+.nav-cart .count { width: 18px; height: 18px; border-radius: 50%; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 600; transition: all 0.3s; }
+.nav-cart:hover .count { background: white; color: var(--green); }
+
+/* Page Header */
+.page-header {
+  padding: 8rem 3rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-header-bg {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  filter: blur(100px);
+  top: -200px; left: 50%; transform: translateX(-50%);
+  opacity: 0.4;
+}
+.page-header .section-label { font-size: 0.6rem; letter-spacing: 4px; text-transform: uppercase; color: var(--green); margin-bottom: 1rem; position: relative; z-index: 1; }
+.page-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -1px;
+  position: relative; z-index: 1;
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.3s forwards;
+}
+.page-title .green { color: var(--green); }
+.page-desc {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.5s forwards;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.results-count {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+  position: relative; z-index: 1;
+}
+
+/* Filters */
+.filters {
+  padding: 0 3rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.7s forwards;
+}
+.filter-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.filter-tag {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  background: none;
+  transition: all 0.3s;
+}
+.filter-tag:hover { border-color: var(--green); color: var(--green); }
+.filter-tag.active { background: var(--green); color: white; border-color: var(--green); }
+.sort-select {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  background: white;
+  font-family: var(--sans);
+  outline: none;
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%231A2E1A' opacity='0.3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  cursor: none;
+}
+
+/* Product Grid */
+.shop-grid {
+  padding: 0 3rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+.product-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0;
+  transform: translateY(40px);
+  position: relative;
+}
+.product-card.visible { opacity: 1; transform: translateY(0); }
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 16px 50px rgba(0,0,0,0.07); }
+.product-card:hover .product-img-inner { transform: scale(1.05); }
+.product-img {
+  height: 260px;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.product-img-inner { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+.product-img::after {
+  content: 'Quick view';
+  position: absolute;
+  bottom: -40px;
+  left: 50%; transform: translateX(-50%);
+  padding: 8px 20px;
+  background: var(--green);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: bottom 0.4s cubic-bezier(0.16,1,0.3,1);
+  white-space: nowrap;
+}
+.product-card:hover .product-img::after { bottom: 12px; }
+.product-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 50px; font-size: 0.5rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; z-index: 2; }
+.badge-new { background: var(--green); color: white; }
+.badge-sale { background: var(--terracotta); color: white; }
+.badge-popular { background: var(--text); color: white; }
+.badge-low { background: var(--sand); color: var(--text); }
+.wishlist-btn { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: white; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; z-index: 2; transition: all 0.3s; color: var(--text-muted); }
+.wishlist-btn:hover { color: var(--terracotta); border-color: var(--terracotta); }
+.wishlist-btn.liked { color: var(--terracotta); background: rgba(196,114,90,0.08); border-color: var(--terracotta); }
+.p-display { position: relative; display: flex; flex-direction: column; align-items: center; }
+.p-pot { width: 45px; height: 40px; border-radius: 4px 4px 12px 12px; position: relative; }
+.p-pot::before { content:''; position: absolute; top: -5px; left: -3px; width: calc(100% + 6px); height: 10px; border-radius: 3px; background: inherit; opacity: 0.85; }
+.p-leaf { position: absolute; border-radius: 50% 0 50% 0; animation: leafSway 4s ease-in-out infinite; }
+@keyframes leafSway { 0%,100% { transform: rotate(var(--r,0deg)); } 50% { transform: rotate(calc(var(--r,0deg) + 5deg)); } }
+.product-info { padding: 1.25rem; }
+.product-name { font-family: var(--serif); font-size: 0.95rem; margin-bottom: 2px; }
+.product-latin { font-size: 0.65rem; color: var(--text-dim); font-style: italic; margin-bottom: 8px; }
+.product-bottom { display: flex; justify-content: space-between; align-items: center; }
+.product-price { font-size: 1rem; font-weight: 600; color: var(--green); }
+.product-price .old { text-decoration: line-through; color: var(--text-muted); font-weight: 300; font-size: 0.8rem; margin-right: 4px; }
+.product-add { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: none; font-size: 1rem; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all 0.3s; }
+.product-add:hover { background: var(--green); color: white; border-color: var(--green); }
+.product-care { display: flex; gap: 10px; margin-top: 8px; }
+.care-icon { font-size: 0.55rem; color: var(--text-muted); display: flex; align-items: center; gap: 2px; }
+
+/* Load more */
+.load-more {
+  text-align: center;
+  padding: 2rem 3rem 5rem;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 1.5s forwards;
+}
+.load-more-btn {
+  padding: 1rem 3rem;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  background: none;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  transition: all 0.3s;
+  font-family: var(--sans);
+}
+.load-more-btn:hover { border-color: var(--green); color: var(--green); }
+
+/* Footer */
+footer { padding: 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-muted); }
+.footer-logo { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 6px; color: var(--green); }
+
+@media (max-width: 1024px) { .shop-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  body { cursor: auto; } .cursor, .cursor-dot { display: none; }
+  nav { padding: 1rem 1.5rem; } .nav-links a { display: none; }
+  .page-header, .filters, .shop-grid, .load-more { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .shop-grid { grid-template-columns: repeat(2, 1fr); }
+  .filters { flex-direction: column; gap: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+</style>
+</head>
+<body>
+
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+<div class="scroll-progress"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo hoverable">FLŌRA</a>
+  <div class="nav-links">
+    <a href="#" class="hoverable active">Shop</a>
+    <a href="#" class="hoverable">Collections</a>
+    <a href="#" class="hoverable">Care Guide</a>
+    <a href="#" class="hoverable">About</a>
+    <button class="nav-cart hoverable">Cart <span class="count">2</span></button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-bg"></div>
+  <div class="section-label">Collection</div>
+  <h1 class="page-title">All <span class="green">plants</span></h1>
+  <p class="page-desc">Browse our full collection of hand-picked plants. Filter by light needs, size, or care level to find your perfect match.</p>
+  <div class="results-count">Showing 12 of 150 plants</div>
+</div>
+
+<div class="filters">
+  <div class="filter-tags">
+    <button class="filter-tag active hoverable">All</button>
+    <button class="filter-tag hoverable">Indoor</button>
+    <button class="filter-tag hoverable">Low light</button>
+    <button class="filter-tag hoverable">Pet friendly</button>
+    <button class="filter-tag hoverable">Easy care</button>
+    <button class="filter-tag hoverable">Tropical</button>
+    <button class="filter-tag hoverable">Succulents</button>
+  </div>
+  <select class="sort-select hoverable">
+    <option>Sort by: Popular</option>
+    <option>Price: Low to High</option>
+    <option>Price: High to Low</option>
+    <option>Newest</option>
+  </select>
+</div>
+
+<div class="shop-grid">
+  <!-- 1 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-popular">Popular</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:75px;height:50px;background:#4A7C59;bottom:45px;left:-40px;--r:-25deg;"></div>
+        <div class="p-leaf" style="width:65px;height:42px;background:#6B9E78;bottom:55px;left:8px;--r:20deg;animation-delay:0.5s;"></div>
+        <div class="p-leaf" style="width:80px;height:52px;background:#5A8F6A;bottom:38px;left:12px;--r:30deg;animation-delay:1s;"></div>
+        <div class="p-pot" style="background:#C4725A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Monstera Deliciosa</div>
+      <div class="product-latin">Swiss Cheese Plant</div>
+      <div class="product-bottom"><div class="product-price">€45</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Medium</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+  <!-- 2 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-new">New</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:45px;height:75px;background:#3D6B4A;bottom:45px;left:-12px;--r:-5deg;border-radius:45% 45% 5% 5%;"></div>
+        <div class="p-leaf" style="width:40px;height:65px;background:#4A7C59;bottom:42px;left:6px;--r:8deg;border-radius:45% 45% 5% 5%;animation-delay:0.6s;"></div>
+        <div class="p-leaf" style="width:35px;height:60px;background:#6B9E78;bottom:40px;left:-22px;--r:-10deg;border-radius:45% 45% 5% 5%;animation-delay:1.1s;"></div>
+        <div class="p-pot" style="background:#E8E4DE;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Snake Plant</div>
+      <div class="product-latin">Sansevieria Trifasciata</div>
+      <div class="product-bottom"><div class="product-price">€32</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Low</span><span class="care-icon">💧 Bi-weekly</span></div>
+    </div>
+  </div>
+  <!-- 3 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-sale">-20%</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:55px;height:32px;background:#6B9E78;bottom:48px;left:-30px;--r:-20deg;"></div>
+        <div class="p-leaf" style="width:50px;height:28px;background:#8FBC8F;bottom:55px;left:8px;--r:18deg;animation-delay:0.4s;"></div>
+        <div class="p-leaf" style="width:45px;height:25px;background:#A8C5A0;bottom:62px;left:-8px;--r:-10deg;animation-delay:0.9s;"></div>
+        <div class="p-pot" style="background:#3A3A3A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Pothos Golden</div>
+      <div class="product-latin">Epipremnum Aureum</div>
+      <div class="product-bottom"><div class="product-price"><span class="old">€30</span>€24</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Low</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+  <!-- 4 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:70px;height:45px;background:#4A7C59;bottom:48px;left:-35px;--r:-28deg;"></div>
+        <div class="p-leaf" style="width:60px;height:38px;background:#3D6B4A;bottom:58px;left:5px;--r:22deg;animation-delay:0.7s;"></div>
+        <div class="p-pot" style="background:#C4725A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Fiddle Leaf Fig</div>
+      <div class="product-latin">Ficus Lyrata</div>
+      <div class="product-bottom"><div class="product-price">€55</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Bright</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+  <!-- 5 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-low">Low stock</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:90px;height:12px;background:#4A7C59;bottom:55px;left:-48px;--r:-8deg;border-radius:50%;"></div>
+        <div class="p-leaf" style="width:85px;height:10px;background:#6B9E78;bottom:65px;left:-40px;--r:5deg;border-radius:50%;animation-delay:0.3s;"></div>
+        <div class="p-leaf" style="width:80px;height:11px;background:#8FBC8F;bottom:48px;left:-35px;--r:-3deg;border-radius:50%;animation-delay:0.8s;"></div>
+        <div class="p-pot" style="background:#A8C5A0;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Bird of Paradise</div>
+      <div class="product-latin">Strelitzia Reginae</div>
+      <div class="product-bottom"><div class="product-price">€68</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Bright</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+  <!-- 6 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:40px;height:60px;background:#6B9E78;bottom:45px;left:-8px;--r:0deg;border-radius:40% 40% 0 0;"></div>
+        <div class="p-leaf" style="width:35px;height:50px;background:#8FBC8F;bottom:42px;left:10px;--r:12deg;border-radius:40% 40% 0 0;animation-delay:0.5s;"></div>
+        <div class="p-leaf" style="width:30px;height:45px;background:#4A7C59;bottom:40px;left:-18px;--r:-8deg;border-radius:40% 40% 0 0;animation-delay:1s;"></div>
+        <div class="p-pot" style="background:#E8E4DE;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Aloe Vera</div>
+      <div class="product-latin">Aloe Barbadensis</div>
+      <div class="product-bottom"><div class="product-price">€18</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Bright</span><span class="care-icon">💧 Monthly</span></div>
+    </div>
+  </div>
+  <!-- 7 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-new">New</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:60px;height:40px;background:#3D6B4A;bottom:50px;left:-35px;--r:-22deg;"></div>
+        <div class="p-leaf" style="width:55px;height:35px;background:#4A7C59;bottom:60px;left:5px;--r:15deg;animation-delay:0.4s;"></div>
+        <div class="p-leaf" style="width:50px;height:30px;background:#6B9E78;bottom:45px;left:10px;--r:28deg;animation-delay:0.8s;"></div>
+        <div class="p-pot" style="background:#3A3A3A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Calathea Orbifolia</div>
+      <div class="product-latin">Goeppertia Orbifolia</div>
+      <div class="product-bottom"><div class="product-price">€38</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Low</span><span class="care-icon">💧 Twice/wk</span></div>
+    </div>
+  </div>
+  <!-- 8 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:25px;height:55px;background:#4A7C59;bottom:45px;left:-5px;--r:0deg;border-radius:12px;"></div>
+        <div class="p-leaf" style="width:22px;height:50px;background:#6B9E78;bottom:42px;left:12px;--r:15deg;border-radius:12px;animation-delay:0.6s;"></div>
+        <div class="p-leaf" style="width:20px;height:45px;background:#8FBC8F;bottom:40px;left:-15px;--r:-12deg;border-radius:12px;animation-delay:1.2s;"></div>
+        <div class="p-pot" style="background:#C4725A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">ZZ Plant</div>
+      <div class="product-latin">Zamioculcas Zamiifolia</div>
+      <div class="product-bottom"><div class="product-price">€28</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Low</span><span class="care-icon">💧 Monthly</span></div>
+    </div>
+  </div>
+  <!-- 9 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-sale">-15%</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:65px;height:42px;background:#5A8F6A;bottom:50px;left:-38px;--r:-18deg;"></div>
+        <div class="p-leaf" style="width:60px;height:38px;background:#4A7C59;bottom:58px;left:5px;--r:14deg;animation-delay:0.5s;"></div>
+        <div class="p-leaf" style="width:55px;height:35px;background:#6B9E78;bottom:42px;left:15px;--r:25deg;animation-delay:1s;"></div>
+        <div class="p-pot" style="background:#A8C5A0;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Peace Lily</div>
+      <div class="product-latin">Spathiphyllum</div>
+      <div class="product-bottom"><div class="product-price"><span class="old">€35</span>€30</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Low</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+  <!-- 10 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:50px;height:50px;background:#6B9E78;bottom:48px;left:-20px;--r:-15deg;border-radius:50%;"></div>
+        <div class="p-leaf" style="width:45px;height:45px;background:#8FBC8F;bottom:55px;left:5px;--r:10deg;border-radius:50%;animation-delay:0.6s;"></div>
+        <div class="p-pot" style="background:#E8E4DE;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Pilea Peperomioides</div>
+      <div class="product-latin">Chinese Money Plant</div>
+      <div class="product-bottom"><div class="product-price">€22</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Medium</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+  <!-- 11 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <span class="product-badge badge-popular">Popular</span>
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:45px;height:30px;background:#4A7C59;bottom:50px;left:-25px;--r:-20deg;"></div>
+        <div class="p-leaf" style="width:40px;height:25px;background:#6B9E78;bottom:56px;left:5px;--r:15deg;animation-delay:0.4s;"></div>
+        <div class="p-leaf" style="width:35px;height:22px;background:#8FBC8F;bottom:48px;left:12px;--r:25deg;animation-delay:0.8s;"></div>
+        <div class="p-leaf" style="width:38px;height:24px;background:#A8C5A0;bottom:62px;left:-10px;--r:-12deg;animation-delay:1.2s;"></div>
+        <div class="p-pot" style="background:#3A3A3A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">String of Pearls</div>
+      <div class="product-latin">Senecio Rowleyanus</div>
+      <div class="product-bottom"><div class="product-price">€19</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Bright</span><span class="care-icon">💧 Bi-weekly</span></div>
+    </div>
+  </div>
+  <!-- 12 -->
+  <div class="product-card hoverable">
+    <div class="product-img">
+      <button class="wishlist-btn hoverable">♡</button>
+      <div class="p-display product-img-inner">
+        <div class="p-leaf" style="width:80px;height:50px;background:#3D6B4A;bottom:48px;left:-42px;--r:-22deg;"></div>
+        <div class="p-leaf" style="width:75px;height:45px;background:#4A7C59;bottom:60px;left:0px;--r:18deg;animation-delay:0.5s;"></div>
+        <div class="p-leaf" style="width:70px;height:40px;background:#6B9E78;bottom:42px;left:10px;--r:28deg;animation-delay:1s;"></div>
+        <div class="p-pot" style="background:#C4725A;"></div>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-name">Rubber Plant</div>
+      <div class="product-latin">Ficus Elastica</div>
+      <div class="product-bottom"><div class="product-price">€42</div><button class="product-add hoverable">+</button></div>
+      <div class="product-care"><span class="care-icon">☀ Medium</span><span class="care-icon">💧 Weekly</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="load-more">
+  <button class="load-more-btn hoverable">Load more plants</button>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo hoverable">FLŌRA</a>
+  <span>&copy; 2026 FLORA &mdash; Designed by Fatima Munoz</span>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.querySelector('.cursor');
+const cursorDot = document.querySelector('.cursor-dot');
+let mx=0,my=0,cx=0,cy=0,dx=0,dy=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+(function loop(){
+  cx += (mx-cx)*0.1; cy += (my-cy)*0.1;
+  dx += (mx-dx)*0.28; dy += (my-dy)*0.28;
+  cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
+  cursorDot.style.left=dx+'px'; cursorDot.style.top=dy+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('.hoverable, a, button, input, select').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.querySelector('.scroll-progress').style.width = (window.scrollY/h)*100+'%';
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.product-card').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.08 + 's';
+  obs.observe(el);
+});
+
+// Filter tags
+document.querySelectorAll('.filter-tag').forEach(tag => {
+  tag.addEventListener('click', () => {
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    tag.classList.add('active');
+  });
+});
+
+// Wishlist toggle
+document.querySelectorAll('.wishlist-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    btn.classList.toggle('liked');
+    btn.textContent = btn.classList.contains('liked') ? '♥' : '♡';
+  });
+});
+
+// Card tilt
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left)/r.width - 0.5) * 6;
+    const y = ((e.clientY - r.top)/r.height - 0.5) * -6;
+    card.style.transform = `translateY(-6px) perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
+</script>
+
+</body>
+</html>

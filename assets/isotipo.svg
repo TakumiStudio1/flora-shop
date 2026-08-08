@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A7C59"/>
+      <stop offset="100%" style="stop-color:#8FBC8F"/>
+    </linearGradient>
+  </defs>
+  <path d="M100 30 C100 30, 155 80, 155 120 C155 160, 100 175, 100 175 C100 175, 45 160, 45 120 C45 80, 100 30, 100 30Z" fill="url(#leaf)" opacity="0.85"/>
+  <path d="M100 50 C100 50, 140 90, 140 120 C140 150, 100 162, 100 162 C100 162, 60 150, 60 120 C60 90, 100 50, 100 50Z" fill="#6B9E78" opacity="0.6"/>
+  <line x1="100" y1="85" x2="100" y2="165" stroke="#3D6B4A" stroke-width="1.5" opacity="0.4"/>
+  <path d="M100 110 Q85 100, 75 108" stroke="#3D6B4A" stroke-width="1" fill="none" opacity="0.3"/>
+  <path d="M100 125 Q115 115, 125 123" stroke="#3D6B4A" stroke-width="1" fill="none" opacity="0.3"/>
+</svg>

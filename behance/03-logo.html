@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#FDFCF9;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;overflow:hidden;}
+.left{width:55%;display:flex;align-items:center;justify-content:center;position:relative;}
+.logo-main{font-family:Georgia,serif;font-size:160px;font-weight:400;letter-spacing:14px;color:#4A7C59;}
+.bg-circle{position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(74,124,89,0.05);filter:blur(40px);}
+.right{width:45%;padding:100px 80px;display:flex;flex-direction:column;justify-content:center;gap:50px;}
+.label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;margin-bottom:12px;}
+.section-title{font-family:Georgia,serif;font-size:34px;font-weight:400;color:#1A2E1A;letter-spacing:-1px;margin-bottom:16px;}
+.desc{font-size:14px;color:rgba(26,46,26,0.45);line-height:1.7;}
+.variants{display:flex;gap:40px;align-items:center;}
+.var-item{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.var-logo{font-family:Georgia,serif;font-size:42px;font-weight:400;letter-spacing:6px;}
+.var-logo.green{color:#4A7C59;}
+.var-logo.dark{color:#1A2E1A;}
+.var-logo.light{color:#FDFCF9;background:#1A2E1A;padding:8px 20px;border-radius:12px;font-size:34px;}
+.var-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.25);}
+.iso-row{display:flex;align-items:center;gap:30px;}
+.iso-leaf{width:60px;height:90px;position:relative;}
+.iso-leaf-shape{position:absolute;inset:0;border-radius:50% 0 50% 0;background:linear-gradient(135deg,#4A7C59,#8FBC8F);}
+.iso-leaf-inner{position:absolute;inset:10px;border-radius:50% 0 50% 0;background:#6B9E78;opacity:0.6;}
+.iso-desc{font-size:13px;color:rgba(26,46,26,0.4);line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="left">
+  <div class="bg-circle"></div>
+  <span class="logo-main">FLŌRA</span>
+</div>
+<div class="right">
+  <div>
+    <div class="label">Logo</div>
+    <div class="section-title">Brand identity</div>
+    <p class="desc">The logotype uses Georgia serif with generous letter-spacing. The macron over the 'O' adds a botanical, Nordic touch — referencing the Latin word for flower. Clean and timeless.</p>
+  </div>
+  <div>
+    <div class="var-label" style="margin-bottom:16px;">Variants</div>
+    <div class="variants">
+      <div class="var-item"><span class="var-logo green">FLŌRA</span><span class="var-label">Primary</span></div>
+      <div class="var-item"><span class="var-logo dark">FLŌRA</span><span class="var-label">Dark</span></div>
+      <div class="var-item"><span class="var-logo light">FLŌRA</span><span class="var-label">Reversed</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="var-label" style="margin-bottom:16px;">Isotipo</div>
+    <div class="iso-row">
+      <div class="iso-leaf"><div class="iso-leaf-shape"></div><div class="iso-leaf-inner"></div></div>
+      <p class="iso-desc">A stylized leaf silhouette.<br>Used as app icon, favicon, and<br>packaging mark.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

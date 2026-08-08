@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{width:1920px;height:1080px;background:#FDFCF9;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;overflow:hidden;}
+.left{width:45%;padding:100px;display:flex;flex-direction:column;justify-content:center;}
+.label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;margin-bottom:20px;}
+h2{font-family:Georgia,serif;font-size:44px;font-weight:400;color:#1A2E1A;letter-spacing:-1px;margin-bottom:16px;}
+.desc{font-size:14px;color:rgba(26,46,26,0.4);line-height:1.7;max-width:380px;}
+.weights{display:flex;gap:30px;margin-top:40px;}
+.weight-item{text-align:center;}
+.weight-letter{font-family:Georgia,serif;font-size:36px;color:rgba(26,46,26,0.15);}
+.weight-name{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.25);margin-top:4px;}
+.right{width:55%;padding:80px 100px;display:flex;flex-direction:column;justify-content:center;gap:50px;}
+.type-section{border-left:2px solid rgba(74,124,89,0.15);padding-left:40px;}
+.type-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,46,26,0.25);margin-bottom:12px;}
+.type-sample.serif-big{font-family:Georgia,serif;font-size:58px;font-weight:400;color:#1A2E1A;letter-spacing:-2px;margin-bottom:6px;}
+.type-sample.serif-med{font-family:Georgia,serif;font-size:38px;font-weight:400;color:rgba(26,46,26,0.7);letter-spacing:-1px;margin-bottom:6px;}
+.green-text{color:#4A7C59;}
+.type-sample.sans-reg{font-size:22px;font-weight:300;color:rgba(26,46,26,0.5);}
+.type-sample.sans-sm{font-size:16px;font-weight:400;color:rgba(26,46,26,0.4);letter-spacing:0.5px;}
+.type-mono{font-family:'SF Mono','Menlo',monospace;font-size:22px;color:#1A2E1A;letter-spacing:0;}
+.type-mono-sm{font-family:'SF Mono','Menlo',monospace;font-size:16px;color:rgba(26,46,26,0.4);margin-top:6px;}
+.type-detail{font-size:12px;color:rgba(26,46,26,0.3);line-height:1.6;margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="left">
+  <div class="label">Typography</div>
+  <h2>Type system</h2>
+  <p class="desc">Serif headlines create warmth and editorial elegance. Sans-serif body text ensures readability. Monospace for prices and data adds a modern, precise feel to the shop experience.</p>
+  <div class="weights">
+    <div class="weight-item"><div class="weight-letter" style="font-weight:400;">Aa</div><div class="weight-name">Regular</div></div>
+    <div class="weight-item"><div class="weight-letter" style="font-family:'Helvetica Neue',sans-serif;font-weight:300;">Aa</div><div class="weight-name">Light</div></div>
+    <div class="weight-item"><div class="weight-letter" style="font-family:'Helvetica Neue',sans-serif;font-weight:400;">Aa</div><div class="weight-name">Regular</div></div>
+    <div class="weight-item"><div class="weight-letter" style="font-family:'Helvetica Neue',sans-serif;font-weight:500;">Aa</div><div class="weight-name">Medium</div></div>
+  </div>
+</div>
+<div class="right">
+  <div class="type-section">
+    <div class="type-label">Serif &mdash; Georgia</div>
+    <div class="type-sample serif-big">Bring <span class="green-text">nature</span> home</div>
+    <div class="type-sample serif-med">Monstera Deliciosa</div>
+    <p class="type-detail">Headlines, product names, section titles</p>
+  </div>
+  <div class="type-section">
+    <div class="type-label">Sans &mdash; Helvetica Neue</div>
+    <div class="type-sample sans-reg">Curated plants for every space and skill level.</div>
+    <div class="type-sample sans-sm" style="margin-top:8px;">Free shipping on orders over €50 &bull; 30-day guarantee</div>
+    <p class="type-detail">Body text, descriptions, navigation, buttons</p>
+  </div>
+  <div class="type-section">
+    <div class="type-label">Mono &mdash; SF Mono</div>
+    <div class="type-mono">€45 &bull; €32 &bull; €68</div>
+    <div class="type-mono-sm">12,000+ plants &bull; 98% survival rate</div>
+    <p class="type-detail">Prices, counters, metadata, badges</p>
+  </div>
+</div>
+</body>
+</html>
