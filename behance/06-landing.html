@@ -5,56 +5,122 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{width:1920px;height:1080px;background:#F5F0E8;font-family:'Helvetica Neue',Arial,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
 .label{position:absolute;top:60px;left:80px;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4A7C59;}
-.mockup{width:1400px;height:850px;background:#FDFCF9;border-radius:16px;border:1px solid rgba(26,46,26,0.06);overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.08);}
-.mock-nav{height:56px;border-bottom:1px solid rgba(26,46,26,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 30px;}
+.mockup{width:1400px;height:850px;background:#FDFCF9;border-radius:16px;border:1px solid rgba(26,46,26,0.06);overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.08);position:relative;}
+.mock-nav{height:56px;border-bottom:1px solid rgba(26,46,26,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:rgba(253,252,249,0.85);backdrop-filter:blur(10px);position:relative;z-index:5;}
 .mock-logo{font-family:Georgia,serif;font-size:16px;letter-spacing:6px;color:#4A7C59;}
-.mock-links{display:flex;gap:24px;font-size:11px;color:rgba(26,46,26,0.35);}
-.mock-cart{padding:5px 14px;border:1px solid #4A7C59;border-radius:50px;font-size:10px;color:#4A7C59;letter-spacing:1px;}
+.mock-links{display:flex;gap:24px;font-size:11px;color:rgba(26,46,26,0.35);letter-spacing:1px;text-transform:uppercase;}
+.mock-cart{padding:5px 14px;border:1px solid #4A7C59;border-radius:50px;font-size:10px;color:#4A7C59;letter-spacing:1px;display:flex;align-items:center;gap:6px;}
+.mock-cart-count{width:16px;height:16px;border-radius:50%;background:#4A7C59;color:white;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:600;}
+.scroll-bar{position:absolute;top:0;left:0;height:2px;width:35%;background:linear-gradient(90deg,#3D6B4A,#4A7C59,#6B9E78,#8FBC8F);z-index:10;}
 .mock-hero{display:flex;height:calc(100% - 56px);position:relative;}
-.mock-left{width:55%;padding:80px 60px;display:flex;flex-direction:column;justify-content:center;}
-.mock-badge{display:inline-block;padding:4px 14px;border:1px solid rgba(26,46,26,0.08);border-radius:30px;font-size:8px;letter-spacing:2px;color:rgba(26,46,26,0.35);margin-bottom:24px;width:fit-content;}
-.mock-badge .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#4A7C59;margin-right:5px;vertical-align:middle;}
-.mock-title{font-family:Georgia,serif;font-size:68px;font-weight:400;color:#1A2E1A;letter-spacing:-3px;line-height:1.05;margin-bottom:16px;}
+/* BG shapes */
+.bg-circle{position:absolute;border-radius:50%;filter:blur(60px);}
+.bg1{width:400px;height:400px;background:rgba(74,124,89,0.06);top:-100px;right:-50px;}
+.bg2{width:300px;height:300px;background:rgba(196,114,90,0.04);bottom:-80px;left:-40px;}
+.bg3{width:200px;height:200px;background:rgba(212,197,169,0.05);top:40%;right:30%;}
+.mock-left{width:50%;padding:70px 50px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
+.mock-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border:1px solid rgba(26,46,26,0.08);border-radius:30px;font-size:8px;letter-spacing:2px;color:rgba(26,46,26,0.35);margin-bottom:24px;width:fit-content;background:rgba(253,252,249,0.5);}
+.mock-badge .dot{width:5px;height:5px;border-radius:50%;background:#4A7C59;box-shadow:0 0 4px rgba(74,124,89,0.3);}
+.mock-title{font-family:Georgia,serif;font-size:62px;font-weight:400;color:#1A2E1A;letter-spacing:-3px;line-height:1.05;margin-bottom:16px;}
 .mock-title span{color:#4A7C59;}
-.mock-desc{font-size:13px;color:rgba(26,46,26,0.4);line-height:1.7;max-width:400px;margin-bottom:24px;}
+.mock-desc{font-size:13px;color:rgba(26,46,26,0.4);line-height:1.7;max-width:380px;margin-bottom:24px;}
 .mock-btns{display:flex;gap:10px;}
-.mock-btn-p{padding:10px 24px;background:#4A7C59;color:white;border-radius:50px;font-size:10px;letter-spacing:2px;text-transform:uppercase;}
-.mock-btn-s{padding:10px 24px;border:1px solid rgba(26,46,26,0.1);border-radius:50px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.5);}
-.mock-right{width:45%;background:#F5F0E8;display:flex;align-items:center;justify-content:center;position:relative;}
+.mock-btn-p{padding:11px 26px;background:#4A7C59;color:white;border-radius:50px;font-size:10px;letter-spacing:2px;text-transform:uppercase;box-shadow:0 8px 25px rgba(74,124,89,0.2);position:relative;overflow:hidden;}
+.mock-btn-p::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);transform:skewX(-20deg);}
+.mock-btn-s{padding:11px 26px;border:1px solid rgba(26,46,26,0.1);border-radius:50px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.5);}
+.mock-right{width:50%;background:#F5F0E8;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+/* Enhanced plant with 7 leaves */
 .mock-plant{position:relative;display:flex;flex-direction:column;align-items:center;}
-.mp-stem{width:3px;height:220px;background:linear-gradient(to top,#3D6B4A,#6B9E78);}
-.mp-leaf{position:absolute;border-radius:50% 0 50% 0;}
-.mp1{width:120px;height:75px;background:#4A7C59;bottom:150px;left:-85px;transform:rotate(-25deg);opacity:0.9;}
-.mp2{width:100px;height:65px;background:#6B9E78;bottom:190px;left:20px;transform:rotate(22deg);}
-.mp3{width:115px;height:72px;background:#5A8F6A;bottom:110px;left:15px;transform:rotate(30deg);opacity:0.85;}
-.mp4{width:90px;height:55px;background:#8FBC8F;bottom:230px;left:-60px;transform:rotate(-35deg);opacity:0.7;}
-.mp-pot{width:80px;height:70px;background:#C4725A;border-radius:6px 6px 18px 18px;position:relative;}
-.mp-pot::before{content:'';position:absolute;top:-7px;left:-5px;width:calc(100% + 10px);height:14px;background:#C4725A;border-radius:4px;opacity:0.9;}
-.mock-tag{position:absolute;top:80px;right:40px;padding:12px 18px;background:white;border:1px solid rgba(26,46,26,0.06);border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.04);transform:rotate(3deg);}
-.mock-tag-name{font-family:Georgia,serif;font-size:12px;margin-bottom:2px;color:#1A2E1A;}
-.mock-tag-latin{font-size:9px;color:rgba(26,46,26,0.35);font-style:italic;margin-bottom:5px;}
-.mock-tag-price{font-size:14px;font-weight:600;color:#4A7C59;}
+.mp-stem{width:3px;height:230px;background:linear-gradient(to top,#3D6B4A,#5A8F6A,#6B9E78);border-radius:2px;}
+.mp-leaf{position:absolute;border-radius:50% 0 50% 0;box-shadow:1px 3px 6px rgba(0,0,0,0.04);}
+.mp-vein{position:absolute;width:1px;height:55%;background:rgba(255,255,255,0.12);top:22%;left:48%;}
+.mp1{width:120px;height:78px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:150px;left:-90px;transform:rotate(-25deg);opacity:0.9;}
+.mp2{width:100px;height:65px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:200px;left:20px;transform:rotate(22deg);}
+.mp3{width:125px;height:80px;background:linear-gradient(135deg,#4A7C59,#5A8F6A);bottom:115px;left:25px;transform:rotate(30deg);opacity:0.85;}
+.mp4{width:85px;height:55px;background:linear-gradient(135deg,#6B9E78,#8FBC8F);bottom:235px;left:-65px;transform:rotate(-38deg);opacity:0.75;}
+.mp5{width:110px;height:70px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:260px;left:10px;transform:rotate(18deg);opacity:0.8;}
+.mp6{width:75px;height:48px;background:linear-gradient(135deg,#8FBC8F,#A8C5A0);bottom:100px;left:-80px;transform:rotate(-15deg);opacity:0.65;}
+.mp7{width:95px;height:60px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:280px;left:-30px;transform:rotate(-8deg);opacity:0.7;}
+.mp-soil{width:100px;height:14px;background:#5D3E28;border-radius:50%;opacity:0.3;margin-top:-8px;}
+.mp-pot{width:85px;height:75px;background:linear-gradient(135deg,#C4725A,#D4845E);border-radius:8px 8px 22px 22px;position:relative;box-shadow:0 12px 30px rgba(196,114,90,0.15);}
+.mp-pot::before{content:'';position:absolute;top:-8px;left:-6px;width:calc(100% + 12px);height:16px;background:linear-gradient(135deg,#C4725A,#D4845E);border-radius:5px;opacity:0.9;}
+.mp-pot::after{content:'';position:absolute;top:8px;left:25%;width:50%;height:75%;background:rgba(255,255,255,0.04);border-radius:50%;filter:blur(8px);}
+/* Tags */
+.mock-tag{position:absolute;top:60px;right:35px;padding:14px 20px;background:white;border:1px solid rgba(26,46,26,0.06);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.05);transform:rotate(3deg);z-index:3;}
+.mock-tag-name{font-family:Georgia,serif;font-size:13px;margin-bottom:2px;color:#1A2E1A;}
+.mock-tag-latin{font-size:9px;color:rgba(26,46,26,0.35);font-style:italic;margin-bottom:6px;}
+.mock-tag-price{font-size:16px;font-weight:600;color:#4A7C59;margin-bottom:3px;}
+.mock-tag-stars{font-size:8px;color:#4A7C59;letter-spacing:1px;}
+.mock-trust{position:absolute;bottom:80px;right:50px;padding:10px 16px;background:white;border:1px solid rgba(26,46,26,0.06);border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.04);display:flex;align-items:center;gap:8px;z-index:3;}
+.trust-icon{width:28px;height:28px;border-radius:50%;background:rgba(74,124,89,0.08);display:flex;align-items:center;justify-content:center;font-size:12px;}
+.trust-text{font-size:9px;color:rgba(26,46,26,0.4);}
+.trust-text strong{color:#1A2E1A;display:block;font-size:10px;}
+/* Floating leaves */
+.float-leaf{position:absolute;border-radius:50% 0 50% 0;background:#4A7C59;opacity:0.04;z-index:1;}
+.fl1{width:40px;height:26px;top:120px;left:80px;transform:rotate(-30deg);}
+.fl2{width:30px;height:18px;bottom:150px;left:220px;transform:rotate(15deg);}
+.fl3{width:35px;height:22px;top:200px;right:180px;transform:rotate(-20deg);}
+/* Cursor mockup */
+.cursor-mock{position:absolute;z-index:4;}
+.cursor-ring{width:20px;height:20px;border:1.5px solid #4A7C59;border-radius:50%;position:absolute;top:320px;left:420px;}
+.cursor-dot{width:4px;height:4px;background:#4A7C59;border-radius:50%;position:absolute;top:328px;left:428px;}
+.cursor-trail1{width:3px;height:3px;background:#4A7C59;border-radius:50%;position:absolute;top:332px;left:418px;opacity:0.15;}
+.cursor-trail2{width:2.5px;height:2.5px;background:#4A7C59;border-radius:50%;position:absolute;top:335px;left:412px;opacity:0.1;}
 .tag{position:absolute;bottom:50px;right:80px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(26,46,26,0.2);}
+/* Annotation markers */
+.anno{position:absolute;z-index:6;}
+.anno-dot{width:8px;height:8px;border-radius:50%;background:#4A7C59;box-shadow:0 0 0 3px rgba(74,124,89,0.15);}
+.anno-line{width:1px;background:rgba(74,124,89,0.15);}
+.anno-text{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:#4A7C59;white-space:nowrap;}
 </style>
 </head>
 <body>
 <div class="label">Landing Page</div>
 <div class="mockup">
-  <div class="mock-nav"><span class="mock-logo">FLŌRA</span><div class="mock-links"><span>Shop</span><span>Collections</span><span>Care Guide</span><span>About</span></div><span class="mock-cart">Cart (2)</span></div>
+  <div class="scroll-bar"></div>
+  <div class="mock-nav"><span class="mock-logo">FLŌRA</span><div class="mock-links"><span>Shop</span><span>Collections</span><span>Care Guide</span><span>About</span></div><div class="mock-cart"><span>Cart</span><span class="mock-cart-count">2</span></div></div>
   <div class="mock-hero">
+    <div class="bg-circle bg1"></div>
+    <div class="bg-circle bg2"></div>
+    <div class="bg-circle bg3"></div>
+    <div class="float-leaf fl1"></div>
+    <div class="float-leaf fl2"></div>
+    <div class="float-leaf fl3"></div>
     <div class="mock-left">
-      <div class="mock-badge"><span class="dot"></span>Free shipping over €50</div>
+      <div class="mock-badge"><span class="dot"></span>Free shipping on orders over €50</div>
       <div class="mock-title">Bring <span>nature</span><br>into your home</div>
-      <div class="mock-desc">Curated plants for every space and skill level. Delivered to your door with care instructions.</div>
+      <div class="mock-desc">Curated plants for every space and skill level. From low-light survivors to statement tropicals — delivered to your door with care instructions included.</div>
       <div class="mock-btns"><span class="mock-btn-p">Shop collection</span><span class="mock-btn-s">Care guide</span></div>
     </div>
     <div class="mock-right">
       <div class="mock-plant">
-        <div class="mp-leaf mp1"></div><div class="mp-leaf mp2"></div><div class="mp-leaf mp3"></div><div class="mp-leaf mp4"></div>
-        <div class="mp-stem"></div><div class="mp-pot"></div>
+        <div class="mp-leaf mp1"><div class="mp-vein"></div></div>
+        <div class="mp-leaf mp2"><div class="mp-vein"></div></div>
+        <div class="mp-leaf mp3"><div class="mp-vein"></div></div>
+        <div class="mp-leaf mp4"></div>
+        <div class="mp-leaf mp5"><div class="mp-vein"></div></div>
+        <div class="mp-leaf mp6"></div>
+        <div class="mp-leaf mp7"></div>
+        <div class="mp-stem"></div>
+        <div class="mp-soil"></div>
+        <div class="mp-pot"></div>
       </div>
-      <div class="mock-tag"><div class="mock-tag-name">Monstera Deliciosa</div><div class="mock-tag-latin">Swiss Cheese Plant</div><div class="mock-tag-price">€45</div></div>
+      <div class="mock-tag">
+        <div class="mock-tag-name">Monstera Deliciosa</div>
+        <div class="mock-tag-latin">Swiss Cheese Plant</div>
+        <div class="mock-tag-price">€45</div>
+        <div class="mock-tag-stars">★★★★★ 4.9</div>
+      </div>
+      <div class="mock-trust">
+        <div class="trust-icon">🌿</div>
+        <div class="trust-text"><strong>12,000+ delivered</strong>98% survival rate</div>
+      </div>
     </div>
+    <!-- Cursor mockup -->
+    <div class="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-trail1"></div>
+    <div class="cursor-trail2"></div>
   </div>
 </div>
 <div class="tag">Desktop &bull; 1440px</div>

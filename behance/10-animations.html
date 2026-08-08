@@ -13,38 +13,60 @@ h2{font-family:Georgia,serif;font-size:42px;font-weight:400;color:#1A2E1A;letter
 .anim-desc{font-size:11px;color:rgba(26,46,26,0.4);text-align:center;line-height:1.5;}
 .anim-tech{margin-top:10px;font-family:'SF Mono','Menlo',monospace;font-size:9px;color:rgba(74,124,89,0.5);text-align:center;}
 /* Leaf sway */
-.sway-leaf{width:80px;height:120px;position:relative;}
-.sway-leaf-shape{position:absolute;border-radius:50% 0 50% 0;animation:swayDemo 3s ease-in-out infinite;}
-.sl1{width:70px;height:45px;background:#4A7C59;bottom:50px;left:-20px;--r:-25deg;animation-delay:0s;}
-.sl2{width:60px;height:38px;background:#6B9E78;bottom:60px;left:15px;--r:20deg;animation-delay:0.5s;}
-.sl3{width:65px;height:40px;background:#5A8F6A;bottom:40px;left:10px;--r:30deg;animation-delay:1s;}
-.sway-stem{width:3px;height:80px;background:#3D6B4A;position:absolute;bottom:0;left:50%;transform:translateX(-50%);}
-@keyframes swayDemo{0%,100%{transform:rotate(var(--r,0deg));}50%{transform:rotate(calc(var(--r,0deg) + 8deg));}}
+.sway-leaf{width:80px;height:140px;position:relative;}
+.sway-leaf-shape{position:absolute;border-radius:50% 0 50% 0;animation:swayDemo 3s ease-in-out infinite;box-shadow:1px 2px 5px rgba(0,0,0,0.04);}
+.sl1{width:70px;height:45px;background:linear-gradient(135deg,#3D6B4A,#4A7C59);bottom:60px;left:-25px;--r:-25deg;}
+.sl2{width:60px;height:38px;background:linear-gradient(135deg,#5A8F6A,#6B9E78);bottom:75px;left:15px;--r:20deg;animation-delay:0.5s;}
+.sl3{width:65px;height:40px;background:linear-gradient(135deg,#4A7C59,#5A8F6A);bottom:45px;left:10px;--r:30deg;animation-delay:1s;}
+.sl4{width:50px;height:32px;background:linear-gradient(135deg,#6B9E78,#8FBC8F);bottom:88px;left:-12px;--r:-15deg;animation-delay:1.5s;opacity:0.7;}
+.sway-stem{width:3px;height:90px;background:linear-gradient(to top,#3D6B4A,#6B9E78);position:absolute;bottom:0;left:50%;transform:translateX(-50%);border-radius:2px;}
+.sway-vein{position:absolute;width:1px;height:50%;background:rgba(255,255,255,0.12);top:25%;left:48%;}
+@keyframes swayDemo{0%,100%{transform:rotate(var(--r,0deg)) scale(1);}50%{transform:rotate(calc(var(--r,0deg) + 8deg)) scale(1.02);}}
 /* Card tilt */
-.tilt-demo{width:160px;height:120px;background:white;border:1px solid rgba(26,46,26,0.08);border-radius:14px;padding:14px;animation:tiltDemo 4s ease-in-out infinite;box-shadow:0 8px 30px rgba(0,0,0,0.04);}
+.tilt-demo{width:160px;height:120px;background:white;border:1px solid rgba(26,46,26,0.08);border-radius:14px;padding:14px;animation:tiltDemo 4s ease-in-out infinite;box-shadow:0 8px 30px rgba(0,0,0,0.04);position:relative;overflow:hidden;}
+.tilt-glow{position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(74,124,89,0.06);filter:blur(15px);animation:glowMove 4s ease-in-out infinite;top:10px;left:10px;}
+@keyframes glowMove{0%,100%{transform:translate(0,0);}25%{transform:translate(60px,20px);}75%{transform:translate(-10px,30px);}}
 @keyframes tiltDemo{0%,100%{transform:perspective(600px) rotateY(0) rotateX(0);}25%{transform:perspective(600px) rotateY(8deg) rotateX(-4deg);}75%{transform:perspective(600px) rotateY(-8deg) rotateX(4deg);}}
-.tilt-name{font-family:Georgia,serif;font-size:11px;color:#1A2E1A;margin-bottom:2px;}
-.tilt-latin{font-size:8px;color:rgba(26,46,26,0.3);font-style:italic;margin-bottom:10px;}
-.tilt-price{font-size:14px;font-weight:600;color:#4A7C59;}
-/* Cursor */
-.cur-demo{position:relative;}
-.cur-ring{width:40px;height:40px;border:1.5px solid #4A7C59;border-radius:50%;animation:curMov 3s ease-in-out infinite;}
-.cur-dot{width:6px;height:6px;background:#4A7C59;border-radius:50%;position:absolute;top:17px;left:17px;animation:curMov 3s ease-in-out infinite 0.15s;}
-@keyframes curMov{0%,100%{transform:translate(0,0);}25%{transform:translate(50px,25px);}50%{transform:translate(100px,-8px);}75%{transform:translate(35px,-25px);}}
+.tilt-name{font-family:Georgia,serif;font-size:11px;color:#1A2E1A;margin-bottom:2px;position:relative;z-index:1;}
+.tilt-latin{font-size:8px;color:rgba(26,46,26,0.3);font-style:italic;margin-bottom:10px;position:relative;z-index:1;}
+.tilt-price{font-size:14px;font-weight:600;color:#4A7C59;position:relative;z-index:1;}
+/* Cursor with trail */
+.cur-demo{position:relative;width:200px;height:160px;}
+.cur-ring{width:20px;height:20px;border:1.5px solid #4A7C59;border-radius:50%;position:absolute;animation:curMov 3s ease-in-out infinite;}
+.cur-dot{width:5px;height:5px;background:#4A7C59;border-radius:50%;position:absolute;top:7.5px;left:7.5px;animation:curMov 3s ease-in-out infinite 0.08s;}
+.cur-trail{position:absolute;background:#4A7C59;border-radius:50%;animation:curMov 3s ease-in-out infinite;}
+.ct1{width:3px;height:3px;top:8.5px;left:8.5px;animation-delay:0.16s;opacity:0.15;}
+.ct2{width:2.5px;height:2.5px;top:8.75px;left:8.75px;animation-delay:0.24s;opacity:0.12;}
+.ct3{width:2px;height:2px;top:9px;left:9px;animation-delay:0.32s;opacity:0.08;}
+.cur-hover{width:50px;height:50px;border:1.5px solid rgba(107,158,120,0.4);border-radius:50%;background:rgba(74,124,89,0.05);position:absolute;top:55px;left:100px;opacity:0;animation:curHover 3s ease-in-out infinite;}
+@keyframes curHover{0%,40%{opacity:0;}50%,70%{opacity:1;}80%,100%{opacity:0;}}
+@keyframes curMov{0%,100%{transform:translate(20px,60px);}25%{transform:translate(90px,30px);}50%{transform:translate(125px,55px);}75%{transform:translate(50px,90px);}}
 /* Floating leaves */
 .float-demo{position:relative;width:200px;height:200px;}
 .float-leaf{position:absolute;border-radius:50% 0 50% 0;background:#4A7C59;animation:floatL linear infinite;}
-@keyframes floatL{0%,100%{opacity:0;transform:translateY(80px) rotate(0deg);}15%{opacity:0.2;}85%{opacity:0.2;}50%{transform:translateY(-80px) rotate(180deg) translateX(20px);}}
+@keyframes floatL{0%,100%{opacity:0;transform:translateY(80px) rotate(0deg);}15%{opacity:0.15;}85%{opacity:0.15;}50%{transform:translateY(-80px) rotate(180deg) translateX(20px);}}
 /* Quick view */
 .qv-demo{width:160px;height:140px;background:white;border:1px solid rgba(26,46,26,0.08);border-radius:14px;overflow:hidden;position:relative;}
-.qv-img{height:90px;background:#FAFAF5;display:flex;align-items:center;justify-content:center;}
-.qv-btn{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);padding:5px 14px;background:#4A7C59;color:white;border-radius:50px;font-size:7px;letter-spacing:1px;text-transform:uppercase;animation:qvSlide 3s ease-in-out infinite;white-space:nowrap;}
+.qv-img{height:90px;background:#FAFAF5;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.qv-img-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 60%,rgba(74,124,89,0.06),transparent 70%);}
+.qv-btn{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);padding:5px 14px;background:#4A7C59;color:white;border-radius:50px;font-size:7px;letter-spacing:1px;text-transform:uppercase;animation:qvSlide 3s ease-in-out infinite;white-space:nowrap;box-shadow:0 4px 12px rgba(74,124,89,0.2);}
 @keyframes qvSlide{0%,30%{bottom:-30px;opacity:0;}50%,80%{bottom:52px;opacity:1;}100%{bottom:-30px;opacity:0;}}
 .qv-info{padding:8px 12px;}
 .qv-name{font-family:Georgia,serif;font-size:10px;color:#1A2E1A;}
 .qv-price{font-size:11px;font-weight:600;color:#4A7C59;}
 /* Counter */
-.counter-demo{font-family:Georgia,serif;font-size:64px;font-weight:400;color:#4A7C59;letter-spacing:-3px;}
+.counter-demo{font-family:Georgia,serif;font-size:58px;font-weight:400;color:#4A7C59;letter-spacing:-3px;position:relative;}
+.counter-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(26,46,26,0.25);margin-top:6px;text-align:center;}
+.counter-icon{font-size:20px;margin-bottom:8px;opacity:0.5;text-align:center;}
+/* Parallax */
+.parallax-demo{position:relative;width:200px;height:180px;}
+.para-shape{position:absolute;border-radius:50%;filter:blur(15px);animation:paraFloat ease-in-out infinite;}
+.ps1{width:80px;height:80px;background:rgba(74,124,89,0.08);top:20px;left:20px;animation-duration:4s;}
+.ps2{width:60px;height:60px;background:rgba(196,114,90,0.06);bottom:30px;right:20px;animation-duration:5s;animation-delay:1s;}
+.ps3{width:40px;height:40px;background:rgba(212,197,169,0.06);top:60px;right:40px;animation-duration:3.5s;animation-delay:0.5s;}
+.para-card{width:120px;height:80px;background:white;border:1px solid rgba(26,46,26,0.06);border-radius:10px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 6px 20px rgba(0,0,0,0.03);display:flex;align-items:center;justify-content:center;z-index:1;}
+.para-card-text{font-family:Georgia,serif;font-size:10px;color:rgba(26,46,26,0.3);}
+@keyframes paraFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(15px,-12px) scale(1.08);}}
 </style>
 </head>
 <body>
@@ -54,35 +76,44 @@ h2{font-family:Georgia,serif;font-size:42px;font-weight:400;color:#1A2E1A;letter
   <div class="anim-card">
     <div class="anim-preview">
       <div class="sway-leaf">
-        <div class="sway-leaf-shape sl1"></div>
-        <div class="sway-leaf-shape sl2"></div>
-        <div class="sway-leaf-shape sl3"></div>
+        <div class="sway-leaf-shape sl1"><div class="sway-vein"></div></div>
+        <div class="sway-leaf-shape sl2"><div class="sway-vein"></div></div>
+        <div class="sway-leaf-shape sl3"><div class="sway-vein"></div></div>
+        <div class="sway-leaf-shape sl4"></div>
         <div class="sway-stem"></div>
       </div>
     </div>
     <div class="anim-title">Leaf sway</div>
-    <div class="anim-desc">CSS plants gently sway using @keyframes with custom rotation variables, creating organic movement.</div>
+    <div class="anim-desc">CSS plants gently sway using @keyframes with custom rotation variables and gradient fills for organic depth.</div>
     <div class="anim-tech">@keyframes + CSS custom properties</div>
   </div>
   <div class="anim-card">
     <div class="anim-preview">
       <div class="tilt-demo">
+        <div class="tilt-glow"></div>
         <div class="tilt-name">Monstera</div>
         <div class="tilt-latin">Swiss Cheese</div>
         <div class="tilt-price">€45</div>
       </div>
     </div>
-    <div class="anim-title">Card tilt</div>
-    <div class="anim-desc">Product cards tilt in 3D following the mouse with perspective transform, creating depth on hover.</div>
+    <div class="anim-title">3D card tilt</div>
+    <div class="anim-desc">Product cards tilt in 3D following the mouse with perspective transform and a radial glow that tracks position.</div>
     <div class="anim-tech">mousemove + perspective + rotateX/Y</div>
   </div>
   <div class="anim-card">
     <div class="anim-preview">
-      <div class="cur-demo"><div class="cur-ring"></div><div class="cur-dot"></div></div>
+      <div class="cur-demo">
+        <div class="cur-ring"></div>
+        <div class="cur-dot"></div>
+        <div class="cur-trail ct1"></div>
+        <div class="cur-trail ct2"></div>
+        <div class="cur-trail ct3"></div>
+        <div class="cur-hover"></div>
+      </div>
     </div>
-    <div class="anim-title">Custom cursor</div>
-    <div class="anim-desc">Ring follows with lerp delay, dot trails behind. Expands on hoverable elements for clear interaction feedback.</div>
-    <div class="anim-tech">requestAnimationFrame + lerp</div>
+    <div class="anim-title">Cursor + trail system</div>
+    <div class="anim-desc">Lerp ring, dot, and 5 trailing particles. Expands with glow on hoverable elements for clear interaction feedback.</div>
+    <div class="anim-tech">rAF + lerp interpolation</div>
   </div>
   <div class="anim-card">
     <div class="anim-preview">
@@ -92,29 +123,35 @@ h2{font-family:Georgia,serif;font-size:42px;font-weight:400;color:#1A2E1A;letter
         <div class="float-leaf" style="width:12px;height:16px;left:70%;animation-duration:3.5s;animation-delay:1.5s;"></div>
         <div class="float-leaf" style="width:9px;height:13px;left:35%;animation-duration:4.5s;animation-delay:2s;"></div>
         <div class="float-leaf" style="width:11px;height:15px;left:60%;animation-duration:3.8s;animation-delay:0.4s;"></div>
+        <div class="float-leaf" style="width:7px;height:10px;left:15%;animation-duration:5.5s;animation-delay:1.2s;"></div>
+        <div class="float-leaf" style="width:10px;height:14px;left:80%;animation-duration:4.2s;animation-delay:0.6s;"></div>
       </div>
     </div>
     <div class="anim-title">Floating leaves</div>
-    <div class="anim-desc">Subtle leaf shapes drift across the viewport, adding atmosphere without distraction. Random timing and size.</div>
+    <div class="anim-desc">25 leaf shapes drift across the viewport with random timing, size, and rotation. Subtle atmosphere layer.</div>
     <div class="anim-tech">CSS animation + random positions</div>
   </div>
   <div class="anim-card">
     <div class="anim-preview">
       <div class="qv-demo">
-        <div class="qv-img"><div style="width:20px;height:18px;background:#C4725A;border-radius:3px 3px 8px 8px;"></div></div>
+        <div class="qv-img"><div class="qv-img-bg"></div><div style="width:20px;height:18px;background:linear-gradient(135deg,#C4725A,#D4845E);border-radius:3px 3px 8px 8px;position:relative;z-index:1;"></div></div>
         <div class="qv-btn">Quick view</div>
         <div class="qv-info"><div class="qv-name">Monstera</div><div class="qv-price">€45</div></div>
       </div>
     </div>
     <div class="anim-title">Quick view reveal</div>
-    <div class="anim-desc">A CTA slides up from below the product image on hover, offering a shortcut to product details.</div>
+    <div class="anim-desc">A CTA slides up from below the product image on hover with shadow, offering a shortcut to product details.</div>
     <div class="anim-tech">CSS transition + overflow hidden</div>
   </div>
   <div class="anim-card">
-    <div class="anim-preview"><div class="counter-demo" id="ctr">0</div></div>
+    <div class="anim-preview" style="flex-direction:column;">
+      <div class="counter-icon">🌱</div>
+      <div class="counter-demo" id="ctr">0</div>
+      <div class="counter-label">Plants delivered</div>
+    </div>
     <div class="anim-title">Counter animation</div>
-    <div class="anim-desc">Numbers count from zero to target with cubic easing when scrolled into view. Used for stats section.</div>
-    <div class="anim-tech">rAF + cubic ease-out</div>
+    <div class="anim-desc">Numbers count from zero to target with cubic ease-out when scrolled into view. Four stat counters with icons.</div>
+    <div class="anim-tech">rAF + cubic ease-out + IntersectionObserver</div>
   </div>
 </div>
 <script>
